@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_sonatto/produtos.dart';
 void main() {
-  runApp(const MainApp());
+  runApp(const Produtos());
 }
 
 class MainApp extends StatelessWidget {

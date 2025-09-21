@@ -1,0 +1,12 @@
+{
+    "configurations": [
+        
+        {
+            "name": "mobile_sonatto (Flutter Edge)",
+            "program": "lib/main.dart",
+            "deviceId": "edge",
+            "request": "launch",
+            "type": "dart"
+        }
+    ]
+}

@@ -10,6 +10,9 @@ dependencies:
   flutter:
     sdk: flutter
   carousel_slider: ^5.0.0
+  sqflite: ^2.3.0
+  path: ^1.9.0
+
 
 dev_dependencies:
   flutter_test:
@@ -21,3 +24,4 @@ flutter:
 
   assets:
   - img/
+  - BD/

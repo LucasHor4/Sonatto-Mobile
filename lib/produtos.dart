@@ -15,7 +15,7 @@ class ProdutosState extends State<Produtos> {
     'img/tela-preta.png',
     'img/tela-preta.png',
     'img/tela-preta.png',
-    ];
+  ];
 
   int _indiceAtual = 0;
   final CarouselSliderController _controller = CarouselSliderController();
@@ -48,13 +48,13 @@ class ProdutosState extends State<Produtos> {
                   },
                 ),
                 itemCount: imagens.length,
-                carouselController: _controller,//x!
+                carouselController: _controller, //x!
                 itemBuilder:
                     (BuildContext context, int itemIndex, int pageViewIndex) =>
                         Container(
                           decoration: BoxDecoration(
                             border: Border.all(
-                              width: 2,
+                              width: 1,
                               color: Colors.blueGrey,
                             ),
                           ),
@@ -91,7 +91,8 @@ class ProdutosState extends State<Produtos> {
                           ),
                         ),
               ),
-              Row( //bolinhas q mudam conforme a pag
+              Row(
+                //bolinhas q mudam conforme a pag
                 mainAxisAlignment: MainAxisAlignment.center,
                 children:
                     imagens.asMap().entries.map((entry) {
@@ -113,7 +114,60 @@ class ProdutosState extends State<Produtos> {
                       );
                     }).toList(),
               ),
-
+              /**/
+              Text("Cores disponíveis", style: TextStyle(fontSize: 25)),
+              Row(
+                children: [
+                  Row(
+                    spacing: 7,
+                    children: List.generate(
+                      4 /*aqui vem a variavel para controlar as cores disponíveis*/,
+                      (index) {
+                        return Icon(
+                          Icons.square,
+                          color: Colors.black,
+                          size: 55,
+                        );
+                      },
+                    ),
+                  ),
+                  Spacer(),
+                  Row(
+                    children: List.generate(
+                      5 /*aqui vem a variavel para controlar a avaliação*/,
+                      (index) {
+                        return Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Icon(Icons.star, color: Colors.yellow, size: 42),
+                            Icon(
+                              Icons.star_border,
+                              color: Colors.black,
+                              size: 42,
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              /* */
+              Text("Descrição", style: TextStyle(fontSize: 40)),
+              Container(
+                margin: EdgeInsets.only(
+                  left: MediaQuery.of(context).size.width - 560,
+                  right: MediaQuery.of(context).size.width - 560,
+                ),
+                padding: EdgeInsets.all(18),
+                width: 400,
+                height: 500,
+                decoration: BoxDecoration(color: Color(0xFFD9D9D9)),
+                child: /*Descrição do produto*/ Text(
+                  'Produto.descricao, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis bibendum luctus nibh ac imperdiet. Sed vel dolor massa. Praesent nec ligula pretium, blandit libero et, sodales justo. Sed egestas nibh enim, at posuere dolor blandit ...',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
             ],
           ),
         ),

@@ -1,4 +1,3 @@
-
 class Produto {
   final int? idProduto;
   final String? NomeProduto;
@@ -15,13 +14,13 @@ class Produto {
   Produto.fromJson(Map<String, dynamic> json)
     : idProduto = json['idProduto'] as int,
       NomeProduto = json['NomeProduto'] as String,
-      ValorUnitario = json['ValorUnitario'] as int,
+      ValorUnitario = json['Preco'] as int,
       Descricao = json['Descricao'] as String;
 
   Map<String, dynamic> toJson() => {
     'idProduto': idProduto,
     'NomeProduto': NomeProduto,
-    'ValorUnitario': ValorUnitario,
+    'Preco': ValorUnitario,
     'Descricao': Descricao,
     
   };

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+// import 'package:mobile_sonatto/produtos.dart';
 
 class Produtos extends StatefulWidget {
   const Produtos({super.key});
@@ -17,7 +18,17 @@ class ProdutosState extends State<Produtos> {
     'img/tela-preta.png',
   ];
 
+  int avaliacao = 1; // controla a nota (1 a 5), enquanto n puxa do BD
+  int coresDisponiveis = 4; //  controla as cores disponíveis
   int _indiceAtual = 0;
+  List<Color> CoresProduto = [
+    Colors.black,
+    Colors.red,
+    Colors.blue,
+    Colors.purple,
+
+  ];
+
   final CarouselSliderController _controller = CarouselSliderController();
 
   @override
@@ -118,37 +129,38 @@ class ProdutosState extends State<Produtos> {
               Text("Cores disponíveis", style: TextStyle(fontSize: 25)),
               Row(
                 children: [
+                  // Quadrados pretos
                   Row(
                     spacing: 7,
-                    children: List.generate(
-                      4 /*aqui vem a variavel para controlar as cores disponíveis*/,
-                      (index) {
-                        return Icon(
-                          Icons.square,
-                          color: Colors.black,
-                          size: 55,
-                        );
-                      },
-                    ),
+                    children: List.generate(coresDisponiveis, (index) {
+                      return Icon(Icons.square, color: CoresProduto[index], size: 55);
+                    }),
                   ),
+
                   Spacer(),
+
+                  // Estrelas com borda
                   Row(
-                    children: List.generate(
-                      5 /*aqui vem a variavel para controlar a avaliação*/,
-                      (index) {
-                        return Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Icon(Icons.star, color: Colors.yellow, size: 42),
-                            Icon(
-                              Icons.star_border,
-                              color: Colors.black,
-                              size: 42,
-                            ),
-                          ],
-                        );
-                      },
-                    ),
+                    children: List.generate(5, (index) {
+                      return Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Icon(
+                            Icons.star,
+                            color:
+                                index < avaliacao
+                                    ? Colors.yellow
+                                    : Colors.grey, // controla a cor
+                            size: 42,
+                          ),
+                          Icon(
+                            Icons.star_border,
+                            color: Colors.black, // borda preta por cima
+                            size: 42,
+                          ),
+                        ],
+                      );
+                    }),
                   ),
                 ],
               ),
@@ -161,7 +173,7 @@ class ProdutosState extends State<Produtos> {
                 ),
                 padding: EdgeInsets.all(18),
                 width: 400,
-                height: 500,
+                height: 300,
                 decoration: BoxDecoration(color: Color(0xFFD9D9D9)),
                 child: /*Descrição do produto*/ Text(
                   'Produto.descricao, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis bibendum luctus nibh ac imperdiet. Sed vel dolor massa. Praesent nec ligula pretium, blandit libero et, sodales justo. Sed egestas nibh enim, at posuere dolor blandit ...',

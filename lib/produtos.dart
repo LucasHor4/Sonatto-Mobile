@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-// import 'package:mobile_sonatto/produtos.dart';
+import 'package:flutter/services.dart';
+import 'package:mobile_sonatto/classes/clProduto.dart';
 
 class Produtos extends StatefulWidget {
   const Produtos({super.key});
@@ -10,6 +13,38 @@ class Produtos extends StatefulWidget {
 }
 
 class ProdutosState extends State<Produtos> {
+  List<ProdutoClass> ProdObj = List.empty();
+
+  Future<void> readJson() async {
+    //lê o arquivo json da pasta assets
+    //o arquivo deve ser declarado no pubspec.yaml
+    //await indica que o método é assíncrono e deve esperar o resultado
+    //rootBundle é um objeto que permite acessar os arquivos da pasta assets
+    //loadString lê o arquivo como uma string
+    //final indica que a variável não pode ser alterada depois de inicializada
+    final String response = await rootBundle.loadString(
+      'assets/liked_songs.json',
+    );
+    //decodifica o json
+    //json.decode converte a string em um objeto dinâmico
+    //Iterable é uma coleção de elementos que podem ser percorridos
+
+    Iterable data = await json.decode(response);
+    //converte o json para uma lista de objetos do tipo Musica
+    //List.from cria uma lista a partir de uma coleção
+    //map é um método que aplica uma função a cada elemento da coleção
+    //model é o elemento atual da coleção
+    //Musica.fromJson(model) cria o objeto do tipo Musica a partir do json
+    ProdObj = List<ProdutoClass>.from(
+      data.map((model) => ProdutoClass.fromJson(model)),
+    );
+
+    //define que o estado do objeto foi alterado
+    setState(() {
+      ProdObj;
+    });
+  }
+
   final List<String> imagens = [
     'img/tela-preta.png',
     'img/tela-preta.png',
@@ -26,10 +61,17 @@ class ProdutosState extends State<Produtos> {
     Colors.red,
     Colors.blue,
     Colors.purple,
-
   ];
 
   final CarouselSliderController _controller = CarouselSliderController();
+
+  @override
+  initState() {
+    //chama o método initState da superclasse que é StatefulWidget
+    super.initState();
+    //chama o método para ler o json
+    readJson();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +175,11 @@ class ProdutosState extends State<Produtos> {
                   Row(
                     spacing: 7,
                     children: List.generate(coresDisponiveis, (index) {
-                      return Icon(Icons.square, color: CoresProduto[index], size: 55);
+                      return Icon(
+                        Icons.square,
+                        color: CoresProduto[index],
+                        size: 55,
+                      );
                     }),
                   ),
 
@@ -165,7 +211,7 @@ class ProdutosState extends State<Produtos> {
                 ],
               ),
               /* */
-              Text("Descrição", style: TextStyle(fontSize: 40)),
+              Text(ProdObj[0].Descricao, style: TextStyle(fontSize: 40)),
               Container(
                 margin: EdgeInsets.only(
                   left: MediaQuery.of(context).size.width - 560,

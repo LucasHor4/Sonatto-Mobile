@@ -1,9 +1,37 @@
 [
-    {
-        "IdProduto": 1,
-        "NomeProduto": "Teste",
-        "Preco": 123.45,
-        "Descricao": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-        "ImagemURL": "teste.png"
-    }
+  {
+    "idProduto": 1,
+    "NomeProduto": "Teste",
+    "Preco": 123.45,
+    "Descricao": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "ImagemURL": "teste.png"
+  },
+  {
+    "idProduto": 2,
+    "NomeProduto": "Palheta",
+    "Preco": 15.99,
+    "Descricao": "Palha + etanol = Palheta.",
+    "ImagemURL": "teste.png"
+  },
+  {
+    "idProduto": 3,
+    "NomeProduto": "Bateria",
+    "Preco": 400.0,
+    "Descricao": "Tu dum paa.",
+    "ImagemURL": "teste.png"
+  },
+  {
+    "idProduto": 4,
+    "NomeProduto": "Guitarra",
+    "Preco": 490.2,
+    "Descricao": "Dammmm.",
+    "ImagemURL": "teste.png"
+  },
+  {
+    "idProduto": 5,
+    "NomeProduto": "Microfone",
+    "Preco": 200.2,
+    "Descricao": "Yoooooooo.",
+    "ImagemURL": "teste.png"
+  }
 ]

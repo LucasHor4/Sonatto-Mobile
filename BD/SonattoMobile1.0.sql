@@ -11,3 +11,7 @@ ImagemURL varchar(255) not null
 );
 
 insert into tbProduto(NomeProduto, Preco, Descricao, ImagemURL) value ('Teste', 123.45,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'teste.png');
+insert into tbProduto(NomeProduto, Preco, Descricao, ImagemURL) value ('Palheta', 15.99,'Palha + etanol = Palheta.', 'teste.png');
+insert into tbProduto(NomeProduto, Preco, Descricao, ImagemURL) value ('Bateria', 400.00,'Tu dum paa.', 'teste.png');
+insert into tbProduto(NomeProduto, Preco, Descricao, ImagemURL) value ('Guitarra', 490.20,'Dammmm.', 'teste.png');
+insert into tbProduto(NomeProduto, Preco, Descricao, ImagemURL) value ('Microfone', 200.20,'Yoooooooo.', 'teste.png');

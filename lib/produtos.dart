@@ -183,8 +183,8 @@ class ProdutosState extends State<Produtos> {
                     ProdutoClass produto = snapshot.data![0]; // pega o primeiro
                     return Container(
                       margin: EdgeInsets.only(
-                        left: MediaQuery.of(context).size.width - 560,
-                        right: MediaQuery.of(context).size.width - 560,
+                        left: 50,
+                        right: 50,
                       ),
                       padding: const EdgeInsets.all(18),
                       width: 400,

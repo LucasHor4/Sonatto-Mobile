@@ -1,9 +1,8 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/services.dart';
-import 'package:mobile_sonatto/classes/clProduto.dart';
+import 'classes/clProduto.dart';
 
 class Produtos extends StatefulWidget {
   const Produtos({super.key});
@@ -13,36 +12,14 @@ class Produtos extends StatefulWidget {
 }
 
 class ProdutosState extends State<Produtos> {
-  List<ProdutoClass> ProdObj = List.empty();
+  late Future<List<ProdutoClass>> produtos;
 
-  Future<void> readJson() async {
-    //lê o arquivo json da pasta assets
-    //o arquivo deve ser declarado no pubspec.yaml
-    //await indica que o método é assíncrono e deve esperar o resultado
-    //rootBundle é um objeto que permite acessar os arquivos da pasta assets
-    //loadString lê o arquivo como uma string
-    //final indica que a variável não pode ser alterada depois de inicializada
-    final String response = await rootBundle.loadString(
-      'assets/liked_songs.json',
-    );
-    //decodifica o json
-    //json.decode converte a string em um objeto dinâmico
-    //Iterable é uma coleção de elementos que podem ser percorridos
-
-    Iterable data = await json.decode(response);
-    //converte o json para uma lista de objetos do tipo Musica
-    //List.from cria uma lista a partir de uma coleção
-    //map é um método que aplica uma função a cada elemento da coleção
-    //model é o elemento atual da coleção
-    //Musica.fromJson(model) cria o objeto do tipo Musica a partir do json
-    ProdObj = List<ProdutoClass>.from(
+  Future<List<ProdutoClass>> readJson() async {
+    final String response = await rootBundle.loadString('BD/Produtos.json');
+    Iterable data = json.decode(response);
+    return List<ProdutoClass>.from(
       data.map((model) => ProdutoClass.fromJson(model)),
     );
-
-    //define que o estado do objeto foi alterado
-    setState(() {
-      ProdObj;
-    });
   }
 
   final List<String> imagens = [
@@ -53,8 +30,8 @@ class ProdutosState extends State<Produtos> {
     'img/tela-preta.png',
   ];
 
-  int avaliacao = 1; // controla a nota (1 a 5), enquanto n puxa do BD
-  int coresDisponiveis = 4; //  controla as cores disponíveis
+  int avaliacao = 1; // controla a nota (1 a 5), enquanto não vem do BD
+  int coresDisponiveis = 4; // controla as cores disponíveis
   int _indiceAtual = 0;
   List<Color> CoresProduto = [
     Colors.black,
@@ -66,11 +43,9 @@ class ProdutosState extends State<Produtos> {
   final CarouselSliderController _controller = CarouselSliderController();
 
   @override
-  initState() {
-    //chama o método initState da superclasse que é StatefulWidget
+  void initState() {
     super.initState();
-    //chama o método para ler o json
-    readJson();
+    produtos = readJson(); // Inicializa o Future para carregar os dados
   }
 
   @override
@@ -85,15 +60,13 @@ class ProdutosState extends State<Produtos> {
         body: Center(
           child: ListView(
             children: [
-              //Carousel para ficar passando as imagens
+              // Carousel para passar as imagens
               CarouselSlider.builder(
                 options: CarouselOptions(
-                  height: 500, //aqui regula a altura dele
-                  enlargeCenterPage:
-                      false, //isso se n me engano é para n esticar a imagem
-                  viewportFraction:
-                      1, //isso faz com que só uma imagem esteja na tela
-                  autoPlay: true, //esse cara faz o carousel ficar passando só
+                  height: 500,
+                  enlargeCenterPage: false,
+                  viewportFraction: 1,
+                  autoPlay: true,
                   onPageChanged: (index, reason) {
                     setState(() {
                       _indiceAtual = index;
@@ -101,79 +74,69 @@ class ProdutosState extends State<Produtos> {
                   },
                 ),
                 itemCount: imagens.length,
-                carouselController: _controller, //x!
-                itemBuilder:
-                    (BuildContext context, int itemIndex, int pageViewIndex) =>
-                        Container(
+                carouselController: _controller,
+                itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
+                    Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 1,
+                      color: Colors.blueGrey,
+                    ),
+                  ),
+                  child: Stack(
+                    children: [
+                      Image.asset(
+                        imagens[itemIndex].toString(),
+                        width: double.infinity,
+                      ),
+                      Positioned(
+                        top: 8,
+                        left: 8,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 1,
-                              color: Colors.blueGrey,
+                            color: Colors.black54,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            '${itemIndex + 1}/${imagens.length}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          child: Stack(
-                            children: [
-                              Image.asset(
-                                imagens[itemIndex].toString(),
-                                width: double.infinity, //p cobrir a tela toda
-                              ),
-                              Positioned(
-                                top: 8,
-                                left: 8,
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 4,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.black54,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Text(
-                                    //texto da contagem de imagens
-                                    '${itemIndex + 1}/${imagens.length}',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
                         ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
               Row(
-                //bolinhas q mudam conforme a pag
                 mainAxisAlignment: MainAxisAlignment.center,
-                children:
-                    imagens.asMap().entries.map((entry) {
-                      return GestureDetector(
-                        onTap: () => _controller.animateToPage(entry.key),
-                        child: AnimatedContainer(
-                          duration: Duration(milliseconds: 300),
-                          margin: EdgeInsets.symmetric(horizontal: 4),
-                          width: _indiceAtual == entry.key ? 12 : 8,
-                          height: _indiceAtual == entry.key ? 12 : 8,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color:
-                                _indiceAtual == entry.key
-                                    ? Colors.blueAccent
-                                    : Colors.grey,
-                          ),
-                        ),
-                      );
-                    }).toList(),
+                children: imagens.asMap().entries.map((entry) {
+                  return GestureDetector(
+                    onTap: () => _controller.animateToPage(entry.key),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                      width: _indiceAtual == entry.key ? 12 : 8,
+                      height: _indiceAtual == entry.key ? 12 : 8,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: _indiceAtual == entry.key
+                            ? Colors.blueAccent
+                            : Colors.grey,
+                      ),
+                    ),
+                  );
+                }).toList(),
               ),
-              /**/
-              Text("Cores disponíveis", style: TextStyle(fontSize: 25)),
+              const Text("Cores disponíveis", style: TextStyle(fontSize: 25)),
               Row(
                 children: [
-                  // Quadrados pretos
+                  // Quadrados de cores
                   Row(
-                    spacing: 7,
                     children: List.generate(coresDisponiveis, (index) {
                       return Icon(
                         Icons.square,
@@ -182,9 +145,7 @@ class ProdutosState extends State<Produtos> {
                       );
                     }),
                   ),
-
-                  Spacer(),
-
+                  const Spacer(),
                   // Estrelas com borda
                   Row(
                     children: List.generate(5, (index) {
@@ -193,15 +154,14 @@ class ProdutosState extends State<Produtos> {
                         children: [
                           Icon(
                             Icons.star,
-                            color:
-                                index < avaliacao
-                                    ? Colors.yellow
-                                    : Colors.grey, // controla a cor
+                            color: index < avaliacao
+                                ? Colors.yellow
+                                : Colors.grey,
                             size: 42,
                           ),
-                          Icon(
+                          const Icon(
                             Icons.star_border,
-                            color: Colors.black, // borda preta por cima
+                            color: Colors.black,
                             size: 42,
                           ),
                         ],
@@ -210,21 +170,35 @@ class ProdutosState extends State<Produtos> {
                   ),
                 ],
               ),
-              /* */
-              Text(ProdObj[0].Descricao, style: TextStyle(fontSize: 40)),
-              Container(
-                margin: EdgeInsets.only(
-                  left: MediaQuery.of(context).size.width - 560,
-                  right: MediaQuery.of(context).size.width - 560,
-                ),
-                padding: EdgeInsets.all(18),
-                width: 400,
-                height: 300,
-                decoration: BoxDecoration(color: Color(0xFFD9D9D9)),
-                child: /*Descrição do produto*/ Text(
-                  'Produto.descricao, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis bibendum luctus nibh ac imperdiet. Sed vel dolor massa. Praesent nec ligula pretium, blandit libero et, sodales justo. Sed egestas nibh enim, at posuere dolor blandit ...',
-                  style: TextStyle(fontSize: 20),
-                ),
+              const Text('Descrição:', style: TextStyle(fontSize: 40)),
+              // Usando o FutureBuilder para esperar os dados
+              FutureBuilder<List<ProdutoClass>>(
+                future: produtos,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return const Center(child: Text('Erro ao carregar dados'));
+                  } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                    ProdutoClass produto = snapshot.data![0]; // pega o primeiro
+                    return Container(
+                      margin: EdgeInsets.only(
+                        left: MediaQuery.of(context).size.width - 560,
+                        right: MediaQuery.of(context).size.width - 560,
+                      ),
+                      padding: const EdgeInsets.all(18),
+                      width: 400,
+                      height: 300,
+                      decoration: const BoxDecoration(color: Color(0xFFD9D9D9)),
+                      child: Text(
+                        produto.Descricao,
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                    );
+                  } else {
+                    return const Center(child: Text('Nenhum produto encontrado'));
+                  }
+                },
               ),
             ],
           ),

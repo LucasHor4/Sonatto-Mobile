@@ -4,8 +4,14 @@ void main() {
   runApp(const Produtos());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class Main extends StatefulWidget {
+  const Main({super.key});
+
+  @override
+  State<Main> createState() => MainState();
+}
+
+class MainState extends State<Main> {
 
   @override
   Widget build(BuildContext context) {

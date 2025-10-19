@@ -21,7 +21,12 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-
+  fonts:
+    - family: SourceCodePro
+      fonts:
+        - asset: fontes/SourceCodePro-Italic-VariableFont_wght.ttf
+        - asset: fontes/SourceCodePro-VariableFont_wght.ttf
   assets:
   - img/
   - BD/
+  - fontes/

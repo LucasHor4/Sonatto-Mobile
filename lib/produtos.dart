@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/services.dart';
 import 'classes/clProduto.dart';
+import 'package:mobile_sonatto/cardProduto.dart';
 
 class Produtos extends StatefulWidget {
   const Produtos({super.key});
@@ -132,20 +133,9 @@ class ProdutosState extends State<Produtos> {
                   );
                 }).toList(),
               ),
-              const Text("Cores disponíveis", style: TextStyle(fontSize: 25)),
+              const Text("Avaliação do produto:", style: TextStyle(fontSize: 25)),
               Row(
                 children: [
-                  // Quadrados de cores
-                  Row(
-                    children: List.generate(coresDisponiveis, (index) {
-                      return Icon(
-                        Icons.square,
-                        color: CoresProduto[index],
-                        size: 55,
-                      );
-                    }),
-                  ),
-                  const Spacer(),
                   // Estrelas com borda
                   Row(
                     children: List.generate(5, (index) {
@@ -180,7 +170,7 @@ class ProdutosState extends State<Produtos> {
                   } else if (snapshot.hasError) {
                     return const Center(child: Text('Erro ao carregar dados'));
                   } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                    ProdutoClass produto = snapshot.data![0]; // pega o primeiro
+                    ProdutoClass produto = snapshot.data![navProd]; // aqui defino o produto a ser pego
                     return Container(
                       margin: EdgeInsets.only(
                         left: 50,

@@ -11,7 +11,7 @@ cursor = conn.cursor()
 cursor.execute('use dbSonattoMobile')
 cursor.execute('select * from tbProduto')
 json_itens = cursor.fetchall()
-jsonList = pd.DataFrame(json_itens, columns = ['idProduto', 'NomeProduto', 'Preco', 'Descricao', 'ImagemURL'])
+jsonList = pd.DataFrame(json_itens, columns = ['idProduto', 'NomeProduto', 'MarcaProduto', 'Preco', 'Descricao', 'ImagemURL'])
 # Aceitar caracteres especiais no json usando utf-8 =
 jsonList.to_json('Produtos.json', orient='records')
 print(jsonList)

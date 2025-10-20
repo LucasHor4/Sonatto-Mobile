@@ -26,6 +26,7 @@ flutter:
       fonts:
         - asset: fontes/SourceCodePro-Italic-VariableFont_wght.ttf
         - asset: fontes/SourceCodePro-VariableFont_wght.ttf
+        - asset: fontes/BowlbyOneSC-Regular.ttf
   assets:
   - img/
   - BD/

@@ -39,7 +39,7 @@ class CardProd extends StatelessWidget {
       width: 100,
       height: 400,
       decoration: BoxDecoration(
-        border: Border.all(width: 2, color: Colors.grey),
+        border: Border.all(width: 0.1, color: Colors.grey),
         borderRadius: BorderRadius.circular(15),
       ),
       margin: EdgeInsets.only(
@@ -57,10 +57,10 @@ class CardProd extends StatelessWidget {
         ),
         clipBehavior: Clip.hardEdge,
         child: ListView(
-          padding: EdgeInsets.only(left: 9, right: 9, bottom: 15),
+          padding: EdgeInsets.only(left: 9, right: 9, bottom: 15, top: 2),
           children: [
             MediaQuery.removePadding(
-              removeTop: true,
+              removeTop: false,
               removeLeft: true,
               removeRight: true,
               removeBottom: true,
@@ -114,8 +114,8 @@ class CardProd extends StatelessWidget {
                   Navigator.pushNamed(context, '/produtospage');
                 },
                 style: TextButton.styleFrom(
-                  backgroundColor: Colors.grey[300],
-                  foregroundColor: Colors.black,
+                  backgroundColor: Color.fromRGBO(60, 60, 67, 1),
+                  foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 10,
                     vertical: 12,

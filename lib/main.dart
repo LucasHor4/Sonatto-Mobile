@@ -19,11 +19,11 @@ class Main extends StatefulWidget {
 class MainState extends State<Main> {
   late Future<List<ProdutoClass>> produtos;
 
-  final int limite;
+  int limite = 4;
+  late int sLimite;
 
-  MainState({
-    this.limite = 4, // limite padrão
-  });
+  List<String> visualisadorDeProdutos = ['Ver mais', 'Ver menos'];
+  int visualisadorDeProdutosVar = 0;
 
   @override
   void initState() {
@@ -43,49 +43,122 @@ class MainState extends State<Main> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: FutureBuilder<List<ProdutoClass>>(
-          future: produtos,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return const Center(child: Text('Erro ao carregar dados'));
-            } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-              final produtosList = snapshot.data!;
-              final exibidos = produtosList.take(limite).toList();
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, // dois por linha
-                    mainAxisSpacing: 8,
-                    crossAxisSpacing: 8,
-                    childAspectRatio: 0.75,
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Text(
+                  'Lançamentos',
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.lerp(
+                      FontWeight.bold,
+                      FontWeight.bold,
+                      1,
+                    ),
+                    fontFamily: 'BowlbyOneSC',
                   ),
-                  itemCount: exibidos.length,
-                  itemBuilder: (context, index) {
-                    final p = exibidos[index];
-                    var navProdMain = produtosList[index].IdProduto - 1;
-
-                    return CardProd(
-                      nome: p.NomeProduto,
-                      marca: p.MarcaProduto,
-                      imagem: p.ImagemURL,
-                      preco: p.Preco,
-                      navMain: navProdMain,
-                    );
-                  },
                 ),
-              );
-            } else {
-              return const Center(child: Text('Nenhum produto encontrado'));
-            }
-          },
+              ),
+
+              const SizedBox(height: 10),
+
+              FutureBuilder<List<ProdutoClass>>(
+                future: produtos,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return const Center(child: Text('Erro ao carregar dados'));
+                  } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                    final produtosList = snapshot.data!;
+                    final exibidos =
+                        produtosList.take(produtosList.length).toList();
+                    delimitadorDeQuant() {
+                      if (limite == 4) {
+                        return limite;
+                      } else if (limite == 0) {
+                        sLimite = produtosList.length;
+                        return sLimite;
+                      } else {
+                        return limite;
+                      }
+                    }
+
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GridView.builder(
+                        physics:
+                            const NeverScrollableScrollPhysics(), // evita conflito
+                        shrinkWrap: true,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 8,
+                              crossAxisSpacing: 8,
+                              childAspectRatio: 0.73,
+                            ),
+                        itemCount: delimitadorDeQuant(),
+                        itemBuilder: (context, index) {
+                          final p = exibidos[index];
+                          var navProdMain = produtosList[index].IdProduto - 1;
+
+                          return CardProd(
+                            nome: p.NomeProduto,
+                            marca: p.MarcaProduto,
+                            imagem: 'img/${p.ImagemURL}',
+                            preco: p.Preco,
+                            navMain: navProdMain,
+                          );
+                        },
+                      ),
+                    );
+                  } else {
+                    return const Center(
+                      child: Text('Nenhum produto encontrado'),
+                    );
+                  }
+                },
+              ),
+
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    if (limite == 4) {
+                      limite = 0;
+                      visualisadorDeProdutosVar = 1;
+                    } else if (limite == 0) {
+                      limite = 4;
+                      visualisadorDeProdutosVar = 0;
+                    }
+                  });
+                },
+                icon: Column(
+                  children: [
+                    Text(visualisadorDeProdutos[visualisadorDeProdutosVar]),
+                    Divider(
+                      color: Colors.grey,
+                      thickness: 2,
+                      indent: 10,
+                      endIndent: 1,
+                    ),
+                  ],
+                ),
+                // icon:
+              ),
+
+              const SizedBox(height: 40),
+
+              const Padding(
+                padding: EdgeInsets.all(16),
+                child: Text('Footer da página'),
+              ),
+            ],
+          ),
         ),
       ),
-      routes: {
-        '/produtospage': (context) => const Produtos(),
-      },
+      routes: {'/produtospage': (context) => const Produtos()},
     );
   }
 }

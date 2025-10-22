@@ -150,9 +150,10 @@ class ProdutosState extends State<Produtos> {
                             size: 42,
                           ),
                           const Icon(
-                            Icons.star_border,
+                            Icons.star_border_outlined,
                             color: Colors.black,
-                            size: 42,
+                            size: 55,
+                            
                           ),
                         ],
                       );
@@ -161,7 +162,7 @@ class ProdutosState extends State<Produtos> {
                 ],
               ),
               const Text('Descrição:', style: TextStyle(fontSize: 40)),
-              // Usando o FutureBuilder para esperar os dados
+              // FutureBuilder para esperar os dados
               FutureBuilder<List<ProdutoClass>>(
                 future: produtos,
                 builder: (context, snapshot) {

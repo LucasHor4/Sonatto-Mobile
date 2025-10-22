@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile_sonatto/classes/clProduto.dart';
 import 'package:mobile_sonatto/Main.dart';
 import 'dart:convert';
@@ -77,19 +78,22 @@ class CardProd extends StatelessWidget {
               nome,
               textAlign: TextAlign.start,
               maxLines: 2,
-              style: TextStyle(
-                fontFamily: 'SourceCodePro',
+              style: GoogleFonts.anton(
                 fontSize: 19,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w500,
               ),
+              // TextStyle(
+              //   fontFamily: 'SourceCodePro',
+              //   fontSize: 19,
+              //   fontWeight: FontWeight.bold,
+              // ),
             ),
             Text(
               marca,
               textAlign: TextAlign.start,
-              style: TextStyle(
-                fontFamily: 'SourceCodePro',
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
+              style: GoogleFonts.anton(
+                fontSize: 19,
+                fontWeight: FontWeight.w500,
               ),
             ),
             Padding(
@@ -97,11 +101,10 @@ class CardProd extends StatelessWidget {
               child: Text(
                 'R\$ ${preco.toStringAsFixed(2)}',
                 textAlign: TextAlign.start,
-                style: TextStyle(
-                  fontFamily: 'SourceCodePro',
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: GoogleFonts.anton(
+                fontSize: 19,
+                fontWeight: FontWeight.w500,
+              ),
               ),
             ),
 

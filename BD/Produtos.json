@@ -1,1 +1,24 @@
-[{"idProduto":1,"NomeProduto":"Teste","MarcaProduto":"Marca teste","Preco":123.45,"Descricao":"Teste de arma","ImagemURL":"tela-preta.png"},{"idProduto":2,"NomeProduto":"Palheta","MarcaProduto":"Marca teste1","Preco":15.99,"Descricao":"Palha + planeta = Palheta.","ImagemURL":"tela-preta.png"},{"idProduto":3,"NomeProduto":"Bateria","MarcaProduto":"Marca teste2","Preco":400.0,"Descricao":"Tu dum paa.","ImagemURL":"tela-preta.png"},{"idProduto":4,"NomeProduto":"Guitarra","MarcaProduto":"Marca teste3","Preco":490.2,"Descricao":"Dammmm.","ImagemURL":"tela-preta.png"},{"idProduto":5,"NomeProduto":"Microfone","MarcaProduto":"Marca teste4","Preco":200.2,"Descricao":"Yoooooooo.","ImagemURL":"tela-preta.png"}]
+[
+    {
+        "IdProduto":1,
+        "NomeProduto":"Bateria Exemplo",
+        "Marca":"Marca Exemplo",
+        "Preco":2000.99,
+        "Descricao":"Bateria vendida pela loja y, \n    com as especificaçoes a seguir: xxxxxxxxxxxxxxxxxxx, xxxxxxxxxxxxxxx, xxxxxxxxxxxx",
+        "Avaliacao":4.5,
+        "Imagens":[
+            "img.png\/teste-url-bateria"
+        ]
+    },
+    {
+        "IdProduto":2,
+        "NomeProduto":"Guitarra Exemplo",
+        "Marca":"Marca Exemplo",
+        "Preco":1000.99,
+        "Descricao":"guitarra vendida pela loja y, \n    com as especificaçoes a seguir: xxxxxxxxxxxxxxxxxxx, xxxxxxxxxxxxxxx, xxxxxxxxxxxx",
+        "Avaliacao":4.5,
+        "Imagens":[
+            "img.png\/teste-url-guitarra"
+        ]
+    }
+]

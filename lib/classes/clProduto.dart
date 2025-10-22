@@ -4,7 +4,7 @@ class ProdutoClass {
   late String MarcaProduto;
   late double Preco;
   late String Descricao;
-  late String ImagemURL;
+  late List<String> Imagens;
 
   ProdutoClass({
     this.IdProduto = 0,
@@ -12,16 +12,18 @@ class ProdutoClass {
     this.MarcaProduto = "",
     this.Preco = 0.0,
     this.Descricao = "",
-    this.ImagemURL = "",
-  });
+    List<String>? Imagens,
+  }) : Imagens = Imagens ?? [];
 
-ProdutoClass.fromJson(Map<String, dynamic> json)
+  ProdutoClass.fromJson(Map<String, dynamic> json)
       : IdProduto = json['IdProduto'] ?? json['idProduto'] ?? 0,
         NomeProduto = json['NomeProduto'] ?? '',
-        MarcaProduto = json['MarcaProduto'] ?? '',
+        MarcaProduto = json['MarcaProduto'] ?? json['Marca'] ?? '',
         Preco = (json['Preco'] ?? 0).toDouble(),
         Descricao = json['Descricao'] ?? '',
-        ImagemURL = json['ImagemURL'] ?? '';
+        Imagens = (json['Imagens'] != null)
+            ? List<String>.from(json['Imagens'])
+            : [];
 
   Map<String, dynamic> toJson() => {
         'IdProduto': IdProduto,
@@ -29,6 +31,6 @@ ProdutoClass.fromJson(Map<String, dynamic> json)
         'MarcaProduto': MarcaProduto,
         'Preco': Preco,
         'Descricao': Descricao,
-        'ImagemURL': ImagemURL,
+        'Imagens': Imagens,
       };
 }

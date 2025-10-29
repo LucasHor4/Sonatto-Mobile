@@ -12,7 +12,7 @@ conn = mysql.connector.connect(
 )
 cursor = conn.cursor(dictionary=True)
 
-# Consulta para trazer produtos e suas imagens (várias por produto)
+# Consulta ajustada: join direto entre tbProduto e tbImagens
 query = """
 SELECT 
     p.IdProduto,
@@ -20,11 +20,11 @@ SELECT
     p.Marca,
     p.Preco,
     p.Descricao,
+    p.Categoria,
     p.Avaliacao,
     i.UrlImagem
 FROM tbProduto AS p
-LEFT JOIN tbImgProduto AS ip ON p.IdProduto = ip.IdProduto
-LEFT JOIN tbImagens AS i ON ip.IdImagem = i.IdImagem
+LEFT JOIN tbImagens AS i ON p.IdProduto = i.IdProduto
 ORDER BY p.IdProduto;
 """
 
@@ -42,6 +42,7 @@ for row in rows:
             "Marca": row["Marca"],
             "Preco": float(row["Preco"]),
             "Descricao": row["Descricao"],
+            "Categoria": row["Categoria"],
             "Avaliacao": float(row["Avaliacao"]),
             "Imagens": []
         }
@@ -50,8 +51,10 @@ for row in rows:
 
 # Converter para lista e gerar JSON
 lista_produtos = list(produtos.values())
-df = pd.DataFrame(lista_produtos)
-df.to_json('Produtos.json', orient='records', force_ascii=False, indent=4)
+
+# Gera JSON formatado (bonito e com acentos)
+with open('Produtos.json', 'w', encoding='utf-8') as f:
+    json.dump(lista_produtos, f, ensure_ascii=False, indent=4)
 
 # Mostrar no terminal
 print(json.dumps(lista_produtos, indent=4, ensure_ascii=False))

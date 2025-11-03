@@ -4,6 +4,7 @@ import 'package:mobile_sonatto/cardProduto.dart';
 import 'classes/clProduto.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:convert';
+import 'dart:ui';
 import 'package:flutter/services.dart';
 
 void main() {
@@ -45,6 +46,10 @@ class MainState extends State<Main> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          title: Image.asset('img/sonatto_logo.png', width: 200, height: 400),
+        ),
         body: SafeArea(
           child: FutureBuilder<List<ProdutoClass>>(
             future: produtos,
@@ -52,7 +57,6 @@ class MainState extends State<Main> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
-                // mostra erro explícito pra ajudar debug
                 return Center(
                   child: Text('Erro ao carregar dados: ${snapshot.error}'),
                 );
@@ -61,16 +65,162 @@ class MainState extends State<Main> {
               }
 
               final produtosList = snapshot.data!;
-
-              // Seções com limites
-              final lancamentos =
-                  produtosList.toList(); // aqui você poderia filtrar se quiser
+              final lancamentos = produtosList.toList();
               final maisVendidos = produtosList.toList();
               final randomizados = (produtosList.toList()..shuffle());
-
               return CustomScrollView(
                 slivers: [
-                  // --- cabeçalho simples de "Lançamentos"
+                  SliverToBoxAdapter(
+                    child: Stack(
+                      children: [
+                        Center(
+                          child: Image.asset(
+                            'img/violaoBackground.png',
+                            width: double.infinity,
+                            height: 400,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Positioned.fill(
+                          top: 10,
+                          bottom: 200,
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: ClipRect(
+                              child: BackdropFilter(
+                                filter: ImageFilter.blur(
+                                  sigmaX: 15,
+                                  sigmaY: 15,
+                                ),
+                                child: Container(
+                                  height: 500,
+                                  color: Colors.white.withOpacity(0.1),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 24,
+                                    vertical: 12,
+                                  ),
+                                  child: Column(
+                                    spacing: 10,
+                                    children: [
+                                      Text(
+                                        'Descubra o instrumento que\nmais parece com você',
+                                        textAlign: TextAlign.start,
+                                        softWrap: true,
+                                        style: GoogleFonts.aoboshiOne(
+                                          fontSize: 32,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.white,
+                                          shadows: [
+                                            Shadow(
+                                              color: Colors.black.withOpacity(
+                                                0.4,
+                                              ),
+                                              blurRadius: 6,
+                                              offset: const Offset(1, 2),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Text(
+                                        'Navegue por uma quantidade imensa de produtos meticulosamente selecionados e projetados para explorar as suas individualidades e cativar o seu senso de estilo.',
+                                        textAlign: TextAlign.start,
+                                        softWrap: true,
+                                        style: GoogleFonts.aoboshiOne(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.white,
+                                          shadows: [
+                                            Shadow(
+                                              color: Colors.black.withOpacity(
+                                                0.4,
+                                              ),
+                                              blurRadius: 6,
+                                              offset: const Offset(1, 2),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        //animação dos itens
+                        Positioned(
+                          bottom: 40,
+                          left: 0,
+                          right: 0,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: const [
+                              ContadorAnimado(
+                                valorFinal: 200,
+                                duracao: 3,
+                                descricao: 'Marcas internacionais',
+                              ),
+                              ContadorAnimado(
+                                valorFinal: 2000,
+                                duracao: 3.5,
+                                descricao: 'Produtos',
+                              ),
+                              ContadorAnimado(
+                                valorFinal: 30000,
+                                duracao: 4,
+                                descricao: 'Clientes satisfeitos',
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  SliverToBoxAdapter(
+                    child: Positioned(
+                      child: Container(
+                        decoration: BoxDecoration(color: Colors.black),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Image.asset(
+                              'img/fender.png',
+                              width: 80,
+                              height: 55,
+                              fit: BoxFit.fitWidth,
+                            ),
+                            Image.asset(
+                              'img/roland.png',
+                              width: 80,
+                              height: 55,
+                              fit: BoxFit.fitWidth,
+                            ),
+                            Image.asset(
+                              'img/gibson.png',
+                              width: 80,
+                              height: 55,
+                              fit: BoxFit.fitWidth,
+                            ),
+                            Image.asset(
+                              'img/pearl.png',
+                              width: 80,
+                              height: 55,
+                              fit: BoxFit.fitWidth,
+                            ),
+                            Image.asset(
+                              'img/yamaha.png',
+                              width: 80,
+                              height: 55,
+                              fit: BoxFit.fitWidth,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+
                   SliverToBoxAdapter(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -86,7 +236,6 @@ class MainState extends State<Main> {
                     ),
                   ),
 
-                  // --- Grid dos Lançamentos (limite1)
                   SliverPadding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 8,
@@ -113,7 +262,6 @@ class MainState extends State<Main> {
                     ),
                   ),
 
-                  // botão ver mais/menos para Lançamentos
                   SliverToBoxAdapter(
                     child: Center(
                       child: TextButton(
@@ -144,7 +292,6 @@ class MainState extends State<Main> {
                     ),
                   ),
 
-                  // --- cabeçalho do "Mais vendidos"
                   SliverToBoxAdapter(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -160,7 +307,6 @@ class MainState extends State<Main> {
                     ),
                   ),
 
-                  // --- Grid dos Mais Vendidos (limite2)
                   SliverPadding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 8,
@@ -217,7 +363,6 @@ class MainState extends State<Main> {
                     ),
                   ),
 
-                  // --- cabeçalho do "Encontre seu estilo"
                   SliverToBoxAdapter(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -233,28 +378,22 @@ class MainState extends State<Main> {
                     ),
                   ),
 
-                  // --- Grid randomizado
                   SliverPadding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 8,
                       vertical: 8,
                     ),
                     sliver: SliverGrid(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          final p = randomizados[index];
-                          return CardProd(
-                            nome: p.NomeProduto,
-                            marca: p.MarcaProduto,
-                            imagem: 'img/${p.Imagens}',
-                            preco: p.Preco,
-                            navMain: p.IdProduto - 1,
-                          );
-                        },
-                        childCount:
-                            randomizados
-                                .length, // ou limite se quiser limitar aqui
-                      ),
+                      delegate: SliverChildBuilderDelegate((context, index) {
+                        final p = randomizados[index];
+                        return CardProd(
+                          nome: p.NomeProduto,
+                          marca: p.MarcaProduto,
+                          imagem: 'img/${p.Imagens}',
+                          preco: p.Preco,
+                          navMain: p.IdProduto - 1,
+                        );
+                      }, childCount: randomizados.length),
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
@@ -265,7 +404,6 @@ class MainState extends State<Main> {
                     ),
                   ),
 
-                  // espaço final
                   SliverToBoxAdapter(child: SizedBox(height: 80)),
                 ],
               );
@@ -280,6 +418,78 @@ class MainState extends State<Main> {
         ),
       ),
       routes: {'/produtospage': (context) => const Produtos()},
+    );
+  }
+}
+
+//configurando animação
+class ContadorAnimado extends StatefulWidget {
+  final int valorFinal;
+  final double duracao;
+  final String descricao;
+
+  const ContadorAnimado({
+    super.key,
+    required this.valorFinal,
+    required this.duracao,
+    required this.descricao,
+  });
+
+  @override
+  State<ContadorAnimado> createState() => _ContadorAnimadoState();
+}
+
+class _ContadorAnimadoState extends State<ContadorAnimado>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<int> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: (widget.duracao * 1000).toInt()),
+    );
+
+    _animation = IntTween(
+      begin: 0,
+      end: widget.valorFinal,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _animation,
+      builder: (context, child) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              '${_animation.value}+',
+              style: GoogleFonts.aoboshiOne(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            Text(
+              widget.descricao,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.poppins(fontSize: 14, color: Colors.white70),
+            ),
+          ],
+        );
+      },
     );
   }
 }

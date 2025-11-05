@@ -22,65 +22,22 @@ CREATE TABLE tbImagens(
     CONSTRAINT fk_ImgIdProduto FOREIGN KEY(IdProduto) REFERENCES tbProduto(IdProduto)
 );
 
+-- Tabela de Estoque
+CREATE TABLE tbEstoque(
+    IdEstoque INT PRIMARY KEY AUTO_INCREMENT,
+    IdProduto INT NOT NULL,
+    QtdEstoque INT NOT NULL,
+    Disponibilidade BIT NOT NULL,
+    CONSTRAINT fk_IdEstoque_IdProduto FOREIGN KEY(IdProduto) REFERENCES tbProduto(IdProduto)
+);
+
+
 -- Procedures 
 
 -- IN => Valor de entrada
 -- OUT => Valor de saída
 -- procedure para criar usuario
 -- drop procedure sp_CadastroUsu
-DELIMITER $$
-CREATE PROCEDURE sp_CadastroUsu(
-    IN vEmail VARCHAR(50),
-    IN vNome VARCHAR(100),
-    IN vSenha VARCHAR(100),
-    IN vCPF VARCHAR(11),
-    IN vEndereco VARCHAR(150),
-    IN vTelefone VARCHAR(11),
-    OUT vIdCli INT
-)
-BEGIN
-	INSERT INTO tbUsuario (Email, Nome, Senha, CPF, Endereco, Telefone)
-    VALUES (vEmail, vNome, vSenha, vCPF, vEndereco, vTelefone);
-
-    SET vIdCli = LAST_INSERT_ID();
-END $$
-DELIMITER ;
--- call da procedure de cadastro:
-CALL sp_CadastroUsu(
-    'arthur@gmail.com',
-    'Arthur dos Santos Reimberg',
-    'art123',
-    '12345678901',
-    'Rua Algum Lugar, Número 42',
-    '11945302356',
-    @vIdCli
-);
-
-CALL sp_CadastroUsu(
-    'lucas@gmail.com',
-    'Lucas Hora',
-    'luc123',
-    '12345678912',
-    'Rua Algum Lugar, Número 40',
-    '11945302359',
-    @vIdCli
-);
-
-
--- procedure adicionar nivel de acesso
-DELIMITER $$
-CREATE PROCEDURE sp_AdicionarNivel(
-	vUsuId INT,
-    vNivelId INT
-)
-BEGIN
-	INSERT INTO tbUsuNivel(IdUsuario, IdNivel)
-    VALUES(vUsuId, vNivelId);
-END$$
-
-DELIMITER ;
-CALL sp_AdicionarNivel(1, 3);
-select * from tbUsuNivel
 
 -- Procedure Cadastrar Produto
 -- drop procedure sp_CadastrarProduto
@@ -109,6 +66,7 @@ BEGIN
 END $$
 DELIMITER ;
 -- Produto 1 
+/*
 CALL sp_CadastrarProduto(
 	'Bateria Exemplo', 
     2000.99,
@@ -130,7 +88,7 @@ CALL sp_CadastrarProduto(
     'Cordas',
     20
 );
-
+*/
 
 
 DELIMITER $$
@@ -143,4 +101,5 @@ BEGIN
     VALUES(vIdProduto,vImagemUrl);
 END $$
 DELIMITER ;
-CALL sp_AdicionarImagens(1,'www.imagem.url.com.br3');
+
+-- CALL sp_AdicionarImagens(1,'www.imagem.url.com.br3');

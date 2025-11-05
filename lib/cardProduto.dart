@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile_sonatto/classes/clProduto.dart';
+import 'package:mobile_sonatto/produtos.dart';
 import 'package:mobile_sonatto/Main.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
@@ -60,17 +61,27 @@ class CardProd extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.only(left: 9, right: 9, bottom: 15, top: 2),
           children: [
-            MediaQuery.removePadding(
-              removeTop: false,
-              removeLeft: true,
-              removeRight: true,
-              removeBottom: true,
-              context: context,
-              child: Image.asset(
+            Positioned(
+              top: 0,
+              bottom: 110,
+
+              child: Image.network(
+                //pra pegar as imagens com os links da net
                 imagem,
-                width: double.infinity,
-                height: 160,
-                fit: BoxFit.cover,
+                fit: BoxFit.contain,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Center(child: CircularProgressIndicator());
+                },
+                errorBuilder: (context, error, stackTrace) {
+                  return Icon(
+                    Icons.broken_image,
+                    size: 140,
+                    color: Colors.grey,
+                  );
+                },
+                width: MediaQuery.of(context).size.width - 10,
+                height: 130,
               ),
             ),
 
@@ -102,9 +113,9 @@ class CardProd extends StatelessWidget {
                 'R\$ ${preco.toStringAsFixed(2)}',
                 textAlign: TextAlign.start,
                 style: GoogleFonts.anton(
-                fontSize: 19,
-                fontWeight: FontWeight.w500,
-              ),
+                  fontSize: 19,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
 
@@ -114,7 +125,12 @@ class CardProd extends StatelessWidget {
                 onPressed: () {
                   //mandar para tela do tal produto
                   navProd = navMain;
-                  Navigator.pushNamed(context, '/produtospage');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Produtos(produtoId: navMain),
+                    ),
+                  );
                 },
                 style: TextButton.styleFrom(
                   backgroundColor: Color.fromRGBO(60, 60, 67, 1),

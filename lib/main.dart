@@ -247,7 +247,7 @@ class MainState extends State<Main> {
                         return CardProd(
                           nome: p.NomeProduto,
                           marca: p.MarcaProduto,
-                          imagem: 'img/${p.Imagens}',
+                          imagem: p.Imagens.isEmpty ? 'https://via.placeholder.com/200' : p.Imagens.first,
                           preco: p.Preco,
                           navMain: p.IdProduto - 1,
                         );
@@ -318,7 +318,7 @@ class MainState extends State<Main> {
                         return CardProd(
                           nome: p.NomeProduto,
                           marca: p.MarcaProduto,
-                          imagem: 'img/${p.Imagens.firstOrNull}',
+                          imagem: p.Imagens.isEmpty ? 'https://via.placeholder.com/200' : p.Imagens.first,
                           preco: p.Preco,
                           navMain: p.IdProduto - 1,
                         );
@@ -389,7 +389,7 @@ class MainState extends State<Main> {
                         return CardProd(
                           nome: p.NomeProduto,
                           marca: p.MarcaProduto,
-                          imagem: 'img/${p.Imagens}',
+                          imagem: p.Imagens.isEmpty ? 'https://via.placeholder.com/200' : p.Imagens.first,
                           preco: p.Preco,
                           navMain: p.IdProduto - 1,
                         );
@@ -417,7 +417,6 @@ class MainState extends State<Main> {
           child: const Text('Footer', style: TextStyle(color: Colors.white)),
         ),
       ),
-      routes: {'/produtospage': (context) => const Produtos()},
     );
   }
 }

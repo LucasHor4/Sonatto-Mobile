@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_sonatto/produtos.dart';
 import 'package:mobile_sonatto/cardProduto.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'classes/clProduto.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:convert';
@@ -8,11 +9,14 @@ import 'dart:ui';
 import 'package:flutter/services.dart';
 
 void main() {
-  runApp(const Main());
+  runApp(Main());
 }
 
 class Main extends StatefulWidget {
-  const Main({super.key});
+  // const Main({super.key});
+  final String? vaiParaHome;
+
+  Main({this.vaiParaHome});
 
   @override
   State<Main> createState() => MainState();
@@ -31,6 +35,46 @@ class MainState extends State<Main> {
   void initState() {
     super.initState();
     produtos = readJson();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollToSection();
+    });
+  }
+
+  final homeKey = GlobalKey();
+  final ScrollController scrollController = ScrollController();
+
+  void _scrollToSection() {
+    BuildContext? target;
+
+    switch (widget.vaiParaHome) {
+      case "home":
+        target = homeKey.currentContext;
+        break;
+    }
+
+    if (target != null) {
+      Scrollable.ensureVisible(
+        target,
+        duration: Duration(milliseconds: 600),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  String filtro = '';
+  bool pesquisa = false;
+  bool visibilidadeOnSubmit = true;
+
+  Widget item(String nome) {
+    return Row(
+      children: [
+        Positioned(child: Text('+')),
+        TextButton(
+          onPressed: () {},
+          child: Text(nome, style: TextStyle(color: Colors.black)),
+        ),
+      ],
+    );
   }
 
   Future<List<ProdutoClass>> readJson() async {
@@ -64,6 +108,12 @@ class MainState extends State<Main> {
                 return const Center(child: Text('Nenhum produto encontrado'));
               }
 
+              final produtosListFiltrado =
+                  snapshot.data!
+                      .where(
+                        (p) => p.NomeProduto.toLowerCase().contains(filtro),
+                      )
+                      .toList();
               final produtosList = snapshot.data!;
               final lancamentos = produtosList.toList();
               final maisVendidos = produtosList.toList();
@@ -74,6 +124,7 @@ class MainState extends State<Main> {
                     child: Stack(
                       children: [
                         Center(
+                          key: homeKey,
                           child: Image.asset(
                             'img/violaoBackground.png',
                             width: double.infinity,
@@ -221,188 +272,292 @@ class MainState extends State<Main> {
                     ),
                   ),
 
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      child: Center(
-                        child: Text(
-                          'Lançamentos',
-                          style: GoogleFonts.anton(
-                            fontSize: 40,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  SliverPadding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 8,
-                    ),
-                    sliver: SliverGrid(
-                      delegate: SliverChildBuilderDelegate((context, index) {
-                        final p = lancamentos[index];
-                        return CardProd(
-                          nome: p.NomeProduto,
-                          marca: p.MarcaProduto,
-                          imagem: p.Imagens.isEmpty ? 'https://via.placeholder.com/200' : p.Imagens.first,
-                          preco: p.Preco,
-                          navMain: p.IdProduto - 1,
-                        );
-                      }, childCount: limite1.clamp(0, lancamentos.length)),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 8,
-                            crossAxisSpacing: 8,
-                            childAspectRatio: 0.73,
-                          ),
-                    ),
-                  ),
-
-                  SliverToBoxAdapter(
-                    child: Center(
-                      child: TextButton(
-                        onPressed: () {
-                          setState(() {
-                            if (limite1 == 4) {
-                              limite1 = 8;
-                            } else {
-                              limite1 = 4;
-                            }
-                          });
-                        },
-                        child: Column(
-                          children: [
-                            Text(
-                              limite1 == 4 ? 'Ver mais' : 'Ver menos',
-                              style: TextStyle(color: Colors.grey),
+                  //Parte que vai aparecer apenas quando der enter na pesquisa
+                  (!visibilidadeOnSubmit == true)
+                      ? SliverToBoxAdapter(
+                        child: Center(
+                          child: Text(
+                            'Resultado para:${filtro}',
+                            style: GoogleFonts.anton(
+                              fontSize: 40,
+                              fontWeight: FontWeight.w500,
                             ),
-                            Divider(
-                              color: Colors.grey,
-                              thickness: 2,
-                              indent: 10,
-                              endIndent: 1,
+                          ),
+                        ),
+                      )
+                      : SliverToBoxAdapter(child: Text('')),
+
+                  (!visibilidadeOnSubmit == true)
+                      ? SliverPadding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 8,
+                        ),
+                        sliver: SliverGrid(
+                          delegate: SliverChildBuilderDelegate((
+                            context,
+                            index,
+                          ) {
+                            final p = produtosListFiltrado[index];
+                            return CardProd(
+                              nome: p.NomeProduto,
+                              marca: p.MarcaProduto,
+                              imagem:
+                                  p.Imagens.isEmpty
+                                      ? 'https://via.placeholder.com/200'
+                                      : p.Imagens.first,
+                              preco: p.Preco,
+                              navMain: p.IdProduto - 1,
+                            );
+                          }, childCount: limite1.clamp(0, lancamentos.length)),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 8,
+                                crossAxisSpacing: 8,
+                                childAspectRatio: 0.73,
+                              ),
+                        ),
+                      )
+                      : SliverToBoxAdapter(child: Text('')), //acaba aqui
+
+                  (visibilidadeOnSubmit == true)
+                      ? SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          child: Center(
+                            child: Text(
+                              'Lançamentos',
+                              style: GoogleFonts.anton(
+                                fontSize: 40,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      child: Center(
-                        child: Text(
-                          'Mais vendidos',
-                          style: GoogleFonts.anton(
-                            fontSize: 40,
-                            fontWeight: FontWeight.w500,
                           ),
                         ),
-                      ),
-                    ),
-                  ),
+                      )
+                      : SliverToBoxAdapter(child: Text('')),
 
-                  SliverPadding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 8,
-                    ),
-                    sliver: SliverGrid(
-                      delegate: SliverChildBuilderDelegate((context, index) {
-                        final p = maisVendidos[index];
-                        return CardProd(
-                          nome: p.NomeProduto,
-                          marca: p.MarcaProduto,
-                          imagem: p.Imagens.isEmpty ? 'https://via.placeholder.com/200' : p.Imagens.first,
-                          preco: p.Preco,
-                          navMain: p.IdProduto - 1,
-                        );
-                      }, childCount: limite2.clamp(0, maisVendidos.length)),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 8,
-                            crossAxisSpacing: 8,
-                            childAspectRatio: 0.73,
-                          ),
-                    ),
-                  ),
+                  (visibilidadeOnSubmit == true)
+                      ? SliverPadding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 8,
+                        ),
+                        sliver: SliverGrid(
+                          delegate: SliverChildBuilderDelegate((
+                            context,
+                            index,
+                          ) {
+                            final p = lancamentos[index];
+                            return Visibility(
+                              visible: visibilidadeOnSubmit,
+                              child: CardProd(
+                                nome: p.NomeProduto,
+                                marca: p.MarcaProduto,
+                                imagem:
+                                    p.Imagens.isEmpty
+                                        ? 'https://via.placeholder.com/200'
+                                        : p.Imagens.first,
+                                preco: p.Preco,
+                                navMain: p.IdProduto - 1,
+                              ),
+                            );
+                          }, childCount: limite1.clamp(0, lancamentos.length)),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 8,
+                                crossAxisSpacing: 8,
+                                childAspectRatio: 0.73,
+                              ),
+                        ),
+                      )
+                      : SliverToBoxAdapter(child: Text('')),
 
-                  SliverToBoxAdapter(
-                    child: Center(
-                      child: TextButton(
-                        onPressed: () {
-                          setState(() {
-                            if (limite2 == 4) {
-                              limite2 = 8;
-                            } else {
-                              limite2 = 4;
-                            }
-                          });
-                        },
-                        child: Column(
-                          children: [
-                            Text(
-                              limite2 == 4 ? 'Ver mais' : 'Ver menos',
-                              style: TextStyle(color: Colors.grey),
+                  (visibilidadeOnSubmit == true)
+                      ? SliverToBoxAdapter(
+                        child: Center(
+                          child: Visibility(
+                            visible: visibilidadeOnSubmit,
+                            child: TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  if (limite1 == 4) {
+                                    limite1 = 8;
+                                  } else {
+                                    limite1 = 4;
+                                  }
+                                });
+                              },
+                              child: Column(
+                                children: [
+                                  Text(
+                                    limite1 == 4 ? 'Ver mais' : 'Ver menos',
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                  Divider(
+                                    color: Colors.grey,
+                                    thickness: 2,
+                                    indent: 10,
+                                    endIndent: 1,
+                                  ),
+                                ],
+                              ),
                             ),
-                            Divider(
-                              color: Colors.grey,
-                              thickness: 2,
-                              indent: 10,
-                              endIndent: 1,
+                          ),
+                        ),
+                      )
+                      : SliverToBoxAdapter(child: Text('')),
+
+                  (visibilidadeOnSubmit == true)
+                      ? SliverToBoxAdapter(
+                        child: Visibility(
+                          visible: visibilidadeOnSubmit,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            child: Center(
+                              child: Text(
+                                'Mais vendidos',
+                                style: GoogleFonts.anton(
+                                  fontSize: 40,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      child: Center(
-                        child: Text(
-                          'Encontre seu estilo',
-                          style: GoogleFonts.anton(
-                            fontSize: 40,
-                            fontWeight: FontWeight.w500,
                           ),
                         ),
-                      ),
-                    ),
-                  ),
+                      )
+                      : SliverToBoxAdapter(child: Text('')),
 
-                  SliverPadding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 8,
-                    ),
-                    sliver: SliverGrid(
-                      delegate: SliverChildBuilderDelegate((context, index) {
-                        final p = randomizados[index];
-                        return CardProd(
-                          nome: p.NomeProduto,
-                          marca: p.MarcaProduto,
-                          imagem: p.Imagens.isEmpty ? 'https://via.placeholder.com/200' : p.Imagens.first,
-                          preco: p.Preco,
-                          navMain: p.IdProduto - 1,
-                        );
-                      }, childCount: randomizados.length),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 8,
-                            crossAxisSpacing: 8,
-                            childAspectRatio: 0.73,
+                  (visibilidadeOnSubmit == true)
+                      ? SliverPadding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 8,
+                        ),
+                        sliver: SliverGrid(
+                          delegate: SliverChildBuilderDelegate((
+                            context,
+                            index,
+                          ) {
+                            final p = maisVendidos[index];
+                            return Visibility(
+                              visible: visibilidadeOnSubmit,
+                              child: CardProd(
+                                nome: p.NomeProduto,
+                                marca: p.MarcaProduto,
+                                imagem:
+                                    p.Imagens.isEmpty
+                                        ? 'https://via.placeholder.com/200'
+                                        : p.Imagens.first,
+                                preco: p.Preco,
+                                navMain: p.IdProduto - 1,
+                              ),
+                            );
+                          }, childCount: limite2.clamp(0, maisVendidos.length)),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 8,
+                                crossAxisSpacing: 8,
+                                childAspectRatio: 0.73,
+                              ),
+                        ),
+                      )
+                      : SliverToBoxAdapter(child: Text('')),
+
+                  (visibilidadeOnSubmit == true)
+                      ? SliverToBoxAdapter(
+                        child: Visibility(
+                          visible: visibilidadeOnSubmit,
+                          child: Center(
+                            child: TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  if (limite2 == 4) {
+                                    limite2 = 8;
+                                  } else {
+                                    limite2 = 4;
+                                  }
+                                });
+                              },
+                              child: Column(
+                                children: [
+                                  Text(
+                                    limite2 == 4 ? 'Ver mais' : 'Ver menos',
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                  Divider(
+                                    color: Colors.grey,
+                                    thickness: 2,
+                                    indent: 10,
+                                    endIndent: 1,
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                    ),
-                  ),
+                        ),
+                      )
+                      : SliverToBoxAdapter(child: Text('')),
+
+                  (visibilidadeOnSubmit == true)
+                      ? SliverToBoxAdapter(
+                        child: Visibility(
+                          visible: visibilidadeOnSubmit,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            child: Center(
+                              child: Text(
+                                'Encontre seu estilo',
+                                style: GoogleFonts.anton(
+                                  fontSize: 40,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                      : SliverToBoxAdapter(child: Text('')),
+
+                  (visibilidadeOnSubmit == true)
+                      ? SliverPadding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 8,
+                        ),
+                        sliver: SliverGrid(
+                          delegate: SliverChildBuilderDelegate((
+                            context,
+                            index,
+                          ) {
+                            final p = randomizados[index];
+                            return Visibility(
+                              visible: visibilidadeOnSubmit,
+                              child: CardProd(
+                                nome: p.NomeProduto,
+                                marca: p.MarcaProduto,
+                                imagem:
+                                    p.Imagens.isEmpty
+                                        ? 'https://via.placeholder.com/200'
+                                        : p.Imagens.first,
+                                preco: p.Preco,
+                                navMain: p.IdProduto - 1,
+                              ),
+                            );
+                          }, childCount: randomizados.length),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 8,
+                                crossAxisSpacing: 8,
+                                childAspectRatio: 0.73,
+                              ),
+                        ),
+                      )
+                      : SliverToBoxAdapter(child: Text('')),
 
                   SliverToBoxAdapter(child: SizedBox(height: 80)),
                 ],
@@ -410,11 +565,100 @@ class MainState extends State<Main> {
             },
           ),
         ),
+        persistentFooterButtons: [
+          Visibility(
+            visible: pesquisa,
+            child: Column(
+              children: [
+                Center(child: Text('Sugestão de pesquisa')),
+                Padding(
+                  padding: EdgeInsetsGeometry.only(
+                    right: 300,
+                    top: 1,
+                    bottom: 10,
+                  ),
+                  child: Padding(
+                    padding: EdgeInsetsGeometry.only(left: 50),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        item('Guitarra'),
+                        item('Bateria'),
+                        item('Saxofone'),
+                        item('Baixo'),
+                        item('Gaita'),
+                        item('Flauta'),
+                      ],
+                    ),
+                  ),
+                ),
+                TextField(
+                  decoration: const InputDecoration(
+                    labelText: "Buscar produto...",
+                    border: OutlineInputBorder(),
+                  ),
+                  onChanged: (valor) {
+                    setState(() {
+                      filtro = valor.toLowerCase();
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
+        ],
         bottomNavigationBar: Container(
-          height: 60,
-          color: Colors.blue,
+          height: 65,
+          color: Colors.black,
           alignment: Alignment.center,
-          child: const Text('Footer', style: TextStyle(color: Colors.white)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            spacing: 20,
+            children: [
+              GestureDetector(
+                onTap: () {},
+                child: Image.asset(
+                  'img/MusicNoteList.png',
+                  width: 120,
+                  height: 100,
+                ),
+              ),
+
+              Builder(
+                builder: (context) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.of(context, rootNavigator: true).push(
+                        MaterialPageRoute(
+                          builder: (context) => Main(vaiParaHome: "home"),
+                        ),
+                      );
+                      Scrollable.ensureVisible(
+                        homeKey.currentContext!,
+                        duration: Duration(milliseconds: 500),
+                        curve: Curves.easeInOut,
+                      );
+                    },
+                    child: Image.asset(
+                      'img/Casa-icon.png',
+                      width: 120,
+                      height: 100,
+                    ),
+                  );
+                },
+              ),
+
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    pesquisa = !pesquisa;
+                    visibilidadeOnSubmit = !visibilidadeOnSubmit;
+                  });
+                },
+                child: Image.asset('img/Search.png', width: 120, height: 100),
+              ),
+            ],
+          ),
         ),
       ),
     );

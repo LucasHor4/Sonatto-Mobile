@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 import 'classes/clProduto.dart';
+import 'package:mobile_sonatto/Main.dart';
 
 class Produtos extends StatefulWidget {
   final int produtoId;
@@ -149,7 +151,6 @@ class ProdutosState extends State<Produtos> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      
                       Text(
                         produto.NomeProduto,
                         style: const TextStyle(
@@ -160,7 +161,6 @@ class ProdutosState extends State<Produtos> {
                       ),
                       const SizedBox(height: 12),
 
-                      
                       Row(
                         children: List.generate(5, (index) {
                           double rating = produto.Avaliacao;
@@ -175,7 +175,6 @@ class ProdutosState extends State<Produtos> {
 
                             child: Stack(
                               children: [
-                                
                                 const Icon(
                                   Icons.star,
                                   color: Colors.grey,
@@ -239,6 +238,61 @@ class ProdutosState extends State<Produtos> {
               ],
             );
           },
+        ),
+        bottomNavigationBar: Container(
+          height: 65,
+          color: Colors.black,
+          alignment: Alignment.center,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            spacing: 20,
+            children: [
+              GestureDetector(
+                onTap: () {},
+                child: Image.asset(
+                  'img/MusicNoteList.png',
+                  width: 120,
+                  height: 100,
+                ),
+              ),
+
+              Builder(
+                builder: (context) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context, {"pesquisar": true});
+
+                      // Scrollable.ensureVisible(
+                      //   homeKey.currentContext!,
+                      //   duration: Duration(milliseconds: 500),
+                      //   curve: Curves.easeInOut,
+                      // );
+                    },
+                    child: Image.asset(
+                      'img/Casa-icon.png',
+                      width: 120,
+                      height: 100,
+                    ),
+                  );
+                },
+              ),
+
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    // pesquisa = !pesquisa;
+                    // visibilidadeOnSubmit = !visibilidadeOnSubmit;
+                    Navigator.of(context, rootNavigator: true).push(
+                      MaterialPageRoute(
+                        builder: (context) => Main(vaiParaHome: "home"),
+                      ),
+                    );
+                  });
+                },
+                child: Image.asset('img/Search.png', width: 120, height: 100),
+              ),
+            ],
+          ),
         ),
       ),
     );

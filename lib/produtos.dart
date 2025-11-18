@@ -260,7 +260,7 @@ class ProdutosState extends State<Produtos> {
                 builder: (context) {
                   return GestureDetector(
                     onTap: () {
-                      Navigator.pop(context, {"pesquisar": true});
+                      Navigator.pop(context);
 
                       // Scrollable.ensureVisible(
                       //   homeKey.currentContext!,

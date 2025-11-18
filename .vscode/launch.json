@@ -1,10 +1,11 @@
 {
     "configurations": [
+    
         
         {
-            "name": "mobile_sonatto (Flutter Edge)",
+            "name": "mobile_sonatto Chrome",
             "program": "lib/main.dart",
-            "deviceId": "edge",
+            "deviceId": "chrome",
             "request": "launch",
             "type": "dart"
         }

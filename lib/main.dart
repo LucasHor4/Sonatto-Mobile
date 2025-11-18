@@ -64,6 +64,7 @@ class MainState extends State<Main> {
   String filtro = '';
   bool pesquisa = false;
   bool visibilidadeOnSubmit = true;
+  bool visibilidadeOnSubmitPesquisaDeuCerto = true;
 
   Widget item(String nome) {
     return Row(
@@ -293,44 +294,41 @@ class MainState extends State<Main> {
                           ),
                         ),
                       )
-                      : SliverToBoxAdapter(child: Text('')),
+                      : SliverToBoxAdapter(child: SizedBox()),
 
                   (!visibilidadeOnSubmit == true)
-                          ? SliverPadding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 8,
-                            ),
-                            sliver: SliverGrid(
-                              delegate: SliverChildBuilderDelegate(
-                                (context, index) {
-                                  final p = produtosListFiltrado[index];
-                                  return CardProd(
-                                    nome: p.NomeProduto,
-                                    marca: p.MarcaProduto,
-                                    imagem:
-                                        p.Imagens.isEmpty
-                                            ? 'https://via.placeholder.com/200'
-                                            : p.Imagens.first,
-                                    preco: p.Preco,
-                                    navMain: p.IdProduto - 1,
-                                  );
-                                },
-                                childCount: limite1.clamp(
-                                  0,
-                                  lancamentos.length,
-                                ),
+                      ? SliverPadding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 8,
+                        ),
+                        sliver: SliverGrid(
+                          delegate: SliverChildBuilderDelegate((
+                            context,
+                            index,
+                          ) {
+                            final p = produtosListFiltrado[index];
+                            return CardProd(
+                              nome: p.NomeProduto,
+                              marca: p.MarcaProduto,
+                              imagem:
+                                  p.Imagens.isEmpty
+                                      ? 'https://via.placeholder.com/200'
+                                      : p.Imagens.first,
+                              preco: p.Preco,
+                              navMain: p.IdProduto - 1,
+                            );
+                          }, childCount: produtosListFiltrado.length),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 8,
+                                crossAxisSpacing: 8,
+                                childAspectRatio: 0.73,
                               ),
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    mainAxisSpacing: 8,
-                                    crossAxisSpacing: 8,
-                                    childAspectRatio: 0.73,
-                                  ),
-                            ),
-                          )
-                          : SliverToBoxAdapter(child: Text('')),
+                        ),
+                      )
+                      : SliverToBoxAdapter(child: SizedBox()),
 
                   //acaba aqui
                   (visibilidadeOnSubmit == true)
@@ -348,7 +346,7 @@ class MainState extends State<Main> {
                           ),
                         ),
                       )
-                      : SliverToBoxAdapter(child: Text('')),
+                      : SliverToBoxAdapter(child: SizedBox()),
 
                   (visibilidadeOnSubmit == true)
                       ? SliverPadding(
@@ -385,7 +383,7 @@ class MainState extends State<Main> {
                               ),
                         ),
                       )
-                      : SliverToBoxAdapter(child: Text('')),
+                      : SliverToBoxAdapter(child: SizedBox()),
 
                   (visibilidadeOnSubmit == true)
                       ? SliverToBoxAdapter(
@@ -420,7 +418,7 @@ class MainState extends State<Main> {
                           ),
                         ),
                       )
-                      : SliverToBoxAdapter(child: Text('')),
+                      : SliverToBoxAdapter(child: SizedBox()),
 
                   (visibilidadeOnSubmit == true)
                       ? SliverToBoxAdapter(
@@ -440,7 +438,7 @@ class MainState extends State<Main> {
                           ),
                         ),
                       )
-                      : SliverToBoxAdapter(child: Text('')),
+                      : SliverToBoxAdapter(child: SizedBox()),
 
                   (visibilidadeOnSubmit == true)
                       ? SliverPadding(
@@ -477,7 +475,7 @@ class MainState extends State<Main> {
                               ),
                         ),
                       )
-                      : SliverToBoxAdapter(child: Text('')),
+                      : SliverToBoxAdapter(child: SizedBox()),
 
                   (visibilidadeOnSubmit == true)
                       ? SliverToBoxAdapter(
@@ -512,7 +510,7 @@ class MainState extends State<Main> {
                           ),
                         ),
                       )
-                      : SliverToBoxAdapter(child: Text('')),
+                      : SliverToBoxAdapter(child: SizedBox()),
 
                   (visibilidadeOnSubmit == true)
                       ? SliverToBoxAdapter(
@@ -532,7 +530,7 @@ class MainState extends State<Main> {
                           ),
                         ),
                       )
-                      : SliverToBoxAdapter(child: Text('')),
+                      : SliverToBoxAdapter(child: SizedBox()),
 
                   (visibilidadeOnSubmit == true)
                       ? SliverPadding(
@@ -569,7 +567,7 @@ class MainState extends State<Main> {
                               ),
                         ),
                       )
-                      : SliverToBoxAdapter(child: Text('')),
+                      : SliverToBoxAdapter(child: SizedBox()),
 
                   SliverToBoxAdapter(child: SizedBox(height: 80)),
                 ],
@@ -582,7 +580,12 @@ class MainState extends State<Main> {
             visible: pesquisa,
             child: Column(
               children: [
-                Center(child: Text('Sugestão de pesquisa')),
+                Center(
+                  child:
+                      (visibilidadeOnSubmitPesquisaDeuCerto == true)
+                          ? Text('Sugestão de pesquisa')
+                          : SizedBox(),
+                ),
                 Padding(
                   padding: EdgeInsetsGeometry.only(
                     right: 300,
@@ -591,30 +594,41 @@ class MainState extends State<Main> {
                   ),
                   child: Padding(
                     padding: EdgeInsetsGeometry.only(left: 50),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        item('Guitarra'),
-                        item('Bateria'),
-                        item('Saxofone'),
-                        item('Baixo'),
-                        item('Gaita'),
-                        item('Flauta'),
-                      ],
-                    ),
+                    child:
+                        (visibilidadeOnSubmitPesquisaDeuCerto == true)
+                            ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                item('Guitarra'),
+                                item('Bateria'),
+                                item('Saxofone'),
+                                item('Baixo'),
+                                item('Gaita'),
+                                item('Flauta'),
+                              ],
+                            )
+                            : SizedBox(),
                   ),
                 ),
-                TextField(
-                  decoration: const InputDecoration(
-                    labelText: "Buscar produto...",
-                    border: OutlineInputBorder(),
-                  ),
-                  onChanged: (valor) {
-                    setState(() {
-                      filtro = valor.toLowerCase();
-                    });
-                  },
-                ),
+                (visibilidadeOnSubmitPesquisaDeuCerto == true)
+                    ? TextField(
+                      decoration: const InputDecoration(
+                        labelText: "Buscar produto...",
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (valor) {
+                        setState(() {
+                          filtro = valor.toLowerCase();
+                        });
+                      },
+                      onSubmitted: (value) {
+                        setState(() {
+                          visibilidadeOnSubmitPesquisaDeuCerto =
+                              false;
+                        });
+                      },
+                    )
+                    : SizedBox(),
               ],
             ),
           ),
@@ -665,6 +679,7 @@ class MainState extends State<Main> {
                   setState(() {
                     pesquisa = !pesquisa;
                     visibilidadeOnSubmit = !visibilidadeOnSubmit;
+                    visibilidadeOnSubmitPesquisaDeuCerto = true;
                   });
                 },
                 child: Image.asset('img/Search.png', width: 120, height: 100),

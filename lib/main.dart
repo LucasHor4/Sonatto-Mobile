@@ -108,12 +108,20 @@ class MainState extends State<Main> {
                 return const Center(child: Text('Nenhum produto encontrado'));
               }
 
-              final produtosListFiltrado =
+              var produtosListFiltrado =
                   snapshot.data!
                       .where(
                         (p) => p.NomeProduto.toLowerCase().contains(filtro),
                       )
                       .toList();
+              if (produtosListFiltrado.isEmpty) {
+                return Center(
+                  child: Text(
+                    'Sem resultados para ${filtro}.',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                );
+              }
               final produtosList = snapshot.data!;
               final lancamentos = produtosList.toList();
               final maisVendidos = produtosList.toList();
@@ -288,39 +296,43 @@ class MainState extends State<Main> {
                       : SliverToBoxAdapter(child: Text('')),
 
                   (!visibilidadeOnSubmit == true)
-                      ? SliverPadding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 8,
-                        ),
-                        sliver: SliverGrid(
-                          delegate: SliverChildBuilderDelegate((
-                            context,
-                            index,
-                          ) {
-                            final p = produtosListFiltrado[index];
-                            return CardProd(
-                              nome: p.NomeProduto,
-                              marca: p.MarcaProduto,
-                              imagem:
-                                  p.Imagens.isEmpty
-                                      ? 'https://via.placeholder.com/200'
-                                      : p.Imagens.first,
-                              preco: p.Preco,
-                              navMain: p.IdProduto - 1,
-                            );
-                          }, childCount: limite1.clamp(0, lancamentos.length)),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                mainAxisSpacing: 8,
-                                crossAxisSpacing: 8,
-                                childAspectRatio: 0.73,
+                          ? SliverPadding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 8,
+                            ),
+                            sliver: SliverGrid(
+                              delegate: SliverChildBuilderDelegate(
+                                (context, index) {
+                                  final p = produtosListFiltrado[index];
+                                  return CardProd(
+                                    nome: p.NomeProduto,
+                                    marca: p.MarcaProduto,
+                                    imagem:
+                                        p.Imagens.isEmpty
+                                            ? 'https://via.placeholder.com/200'
+                                            : p.Imagens.first,
+                                    preco: p.Preco,
+                                    navMain: p.IdProduto - 1,
+                                  );
+                                },
+                                childCount: limite1.clamp(
+                                  0,
+                                  lancamentos.length,
+                                ),
                               ),
-                        ),
-                      )
-                      : SliverToBoxAdapter(child: Text('')), //acaba aqui
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    mainAxisSpacing: 8,
+                                    crossAxisSpacing: 8,
+                                    childAspectRatio: 0.73,
+                                  ),
+                            ),
+                          )
+                          : SliverToBoxAdapter(child: Text('')),
 
+                  //acaba aqui
                   (visibilidadeOnSubmit == true)
                       ? SliverToBoxAdapter(
                         child: Padding(

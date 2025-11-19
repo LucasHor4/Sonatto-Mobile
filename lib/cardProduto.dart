@@ -39,7 +39,7 @@ class CardProd extends StatelessWidget {
 
     return Container(
       width: 100,
-      height: 400,
+      height: 950,
       decoration: BoxDecoration(
         border: Border.all(width: 0.1, color: Colors.grey),
         borderRadius: BorderRadius.circular(15),
@@ -61,9 +61,8 @@ class CardProd extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.only(left: 9, right: 9, bottom: 15, top: 2),
           children: [
-            Positioned(
-              top: 0,
-              bottom: 110,
+            Padding(
+              padding: EdgeInsetsGeometry.only(),
 
               child: Image.network(
                 //pra pegar as imagens com os links da net
@@ -90,7 +89,7 @@ class CardProd extends StatelessWidget {
               textAlign: TextAlign.start,
               maxLines: 2,
               style: GoogleFonts.anton(
-                fontSize: 19,
+                fontSize: 15,
                 fontWeight: FontWeight.w500,
               ),
               // TextStyle(
@@ -103,7 +102,7 @@ class CardProd extends StatelessWidget {
               marca,
               textAlign: TextAlign.start,
               style: GoogleFonts.anton(
-                fontSize: 19,
+                fontSize: 15,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -113,7 +112,7 @@ class CardProd extends StatelessWidget {
                 'R\$ ${preco.toStringAsFixed(2)}',
                 textAlign: TextAlign.start,
                 style: GoogleFonts.anton(
-                  fontSize: 19,
+                  fontSize: 15,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -143,7 +142,7 @@ class CardProd extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                child: Text('Comprar', style: TextStyle(fontSize: 20)),
+                child: Text('Comprar', style: TextStyle(fontSize: 11)),
               ),
             ),
           ],

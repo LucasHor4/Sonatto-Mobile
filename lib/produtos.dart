@@ -78,6 +78,7 @@ class ProdutosState extends State<Produtos> {
                             Image.network(
                               imagens[i],
                               width: double.infinity,
+                              height: double.infinity,
                               fit: BoxFit.cover,
                               loadingBuilder:
                                   (c, child, progress) =>

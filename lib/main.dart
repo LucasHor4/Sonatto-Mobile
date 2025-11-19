@@ -69,7 +69,7 @@ class MainState extends State<Main> {
   Widget item(String nome) {
     return Row(
       children: [
-        Positioned(child: Text('+')),
+        Text('+'),
         TextButton(
           onPressed: () {},
           child: Text(nome, style: TextStyle(color: Colors.black)),
@@ -153,7 +153,7 @@ class MainState extends State<Main> {
                                   sigmaY: 15,
                                 ),
                                 child: Container(
-                                  height: 500,
+                                  height: 700,
                                   color: Colors.white.withOpacity(0.1),
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 24,
@@ -167,7 +167,7 @@ class MainState extends State<Main> {
                                         textAlign: TextAlign.start,
                                         softWrap: true,
                                         style: GoogleFonts.aoboshiOne(
-                                          fontSize: 32,
+                                          fontSize: 25,
                                           fontWeight: FontWeight.w700,
                                           color: Colors.white,
                                           shadows: [
@@ -186,7 +186,7 @@ class MainState extends State<Main> {
                                         textAlign: TextAlign.start,
                                         softWrap: true,
                                         style: GoogleFonts.aoboshiOne(
-                                          fontSize: 15,
+                                          fontSize: 14,
                                           fontWeight: FontWeight.w700,
                                           color: Colors.white,
                                           shadows: [
@@ -239,7 +239,7 @@ class MainState extends State<Main> {
                   ),
 
                   SliverToBoxAdapter(
-                    child: Positioned(
+                    
                       child: Container(
                         decoration: BoxDecoration(color: Colors.black),
                         child: Row(
@@ -278,7 +278,7 @@ class MainState extends State<Main> {
                           ],
                         ),
                       ),
-                    ),
+                    
                   ),
 
                   //Parte que vai aparecer apenas quando der enter na pesquisa
@@ -324,7 +324,7 @@ class MainState extends State<Main> {
                                 crossAxisCount: 2,
                                 mainAxisSpacing: 8,
                                 crossAxisSpacing: 8,
-                                childAspectRatio: 0.73,
+                                childAspectRatio: 0.57,
                               ),
                         ),
                       )
@@ -379,7 +379,7 @@ class MainState extends State<Main> {
                                 crossAxisCount: 2,
                                 mainAxisSpacing: 8,
                                 crossAxisSpacing: 8,
-                                childAspectRatio: 0.73,
+                                childAspectRatio: 0.57,
                               ),
                         ),
                       )
@@ -471,7 +471,7 @@ class MainState extends State<Main> {
                                 crossAxisCount: 2,
                                 mainAxisSpacing: 8,
                                 crossAxisSpacing: 8,
-                                childAspectRatio: 0.73,
+                                childAspectRatio: 0.57,
                               ),
                         ),
                       )
@@ -563,7 +563,7 @@ class MainState extends State<Main> {
                                 crossAxisCount: 2,
                                 mainAxisSpacing: 8,
                                 crossAxisSpacing: 8,
-                                childAspectRatio: 0.73,
+                                childAspectRatio: 0.57,
                               ),
                         ),
                       )
@@ -665,11 +665,12 @@ class MainState extends State<Main> {
                         curve: Curves.easeInOut,
                       );
                     },
-                    child: Image.asset(
-                      'img/Casa-icon.png',
-                      width: 120,
-                      height: 100,
-                    ),
+                    child: Icon(Icons.home, size: 60, color: Colors.white,),
+                    // child: Image.asset(
+                    //   'img/Casa-icon.png',
+                    //   width: 65,
+                    //   height: 65,
+                    // ),
                   );
                 },
               ),

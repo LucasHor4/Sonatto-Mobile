@@ -66,6 +66,8 @@ class MainState extends State<Main> {
 
   String filtro = '';
   bool pesquisa = false;
+  bool categoria = false;
+  bool srcCateg = false;
   bool visibilidadeOnSubmit = true;
   bool visibilidadeOnSubmitPesquisaDeuCerto = true;
 
@@ -249,31 +251,31 @@ class MainState extends State<Main> {
                         children: [
                           Image.asset(
                             'img/fender.png',
-                            width: 80,
+                            width: 60,
                             height: 55,
                             fit: BoxFit.fitWidth,
                           ),
                           Image.asset(
                             'img/roland.png',
-                            width: 80,
+                            width: 60,
                             height: 55,
                             fit: BoxFit.fitWidth,
                           ),
                           Image.asset(
                             'img/gibson.png',
-                            width: 80,
+                            width: 60,
                             height: 55,
                             fit: BoxFit.fitWidth,
                           ),
                           Image.asset(
                             'img/pearl.png',
-                            width: 80,
+                            width: 60,
                             height: 55,
                             fit: BoxFit.fitWidth,
                           ),
                           Image.asset(
                             'img/yamaha.png',
-                            width: 80,
+                            width: 60,
                             height: 55,
                             fit: BoxFit.fitWidth,
                           ),
@@ -325,7 +327,7 @@ class MainState extends State<Main> {
                                 crossAxisCount: 2,
                                 mainAxisSpacing: 8,
                                 crossAxisSpacing: 8,
-                                childAspectRatio: 0.57,
+                                childAspectRatio: 0.37,
                               ),
                         ),
                       )
@@ -380,7 +382,7 @@ class MainState extends State<Main> {
                                 crossAxisCount: 2,
                                 mainAxisSpacing: 8,
                                 crossAxisSpacing: 8,
-                                childAspectRatio: 0.57,
+                                childAspectRatio: 0.37,
                               ),
                         ),
                       )
@@ -472,7 +474,7 @@ class MainState extends State<Main> {
                                 crossAxisCount: 2,
                                 mainAxisSpacing: 8,
                                 crossAxisSpacing: 8,
-                                childAspectRatio: 0.57,
+                                childAspectRatio: 0.37,
                               ),
                         ),
                       )
@@ -564,7 +566,7 @@ class MainState extends State<Main> {
                                 crossAxisCount: 2,
                                 mainAxisSpacing: 8,
                                 crossAxisSpacing: 8,
-                                childAspectRatio: 0.57,
+                                childAspectRatio: 0.37,
                               ),
                         ),
                       )
@@ -577,61 +579,63 @@ class MainState extends State<Main> {
           ),
         ),
         persistentFooterButtons: [
-          Visibility(
-            visible: pesquisa,
-            child: Column(
-              children: [
-                Center(
-                  child:
-                      (visibilidadeOnSubmitPesquisaDeuCerto == true)
-                          ? Text('Sugestão de pesquisa')
-                          : SizedBox(),
-                ),
-                Padding(
-                  padding: EdgeInsetsGeometry.only(
-                    right: 300,
-                    top: 1,
-                    bottom: 10,
-                  ),
-                  child: Padding(
-                    padding: EdgeInsetsGeometry.only(left: 50),
-                    child:
-                        (visibilidadeOnSubmitPesquisaDeuCerto == true)
-                            ? Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                item('Guitarra'),
-                                item('Bateria'),
-                                item('Saxofone'),
-                                item('Baixo'),
-                                item('Gaita'),
-                                item('Flauta'),
-                              ],
-                            )
-                            : SizedBox(),
-                  ),
-                ),
-                (visibilidadeOnSubmitPesquisaDeuCerto == true)
-                    ? TextField(
-                      decoration: const InputDecoration(
-                        labelText: "Buscar produto...",
-                        border: OutlineInputBorder(),
+          (srcCateg == false)
+              ? Visibility(
+                visible: pesquisa,
+                child: Column(
+                  children: [
+                    Center(
+                      child:
+                          (visibilidadeOnSubmitPesquisaDeuCerto == true)
+                              ? Text('Sugestão de pesquisa')
+                              : SizedBox(),
+                    ),
+                    Padding(
+                      padding: EdgeInsetsGeometry.only(
+                        right: 300,
+                        top: 1,
+                        bottom: 10,
                       ),
-                      onChanged: (valor) {
-                        setState(() {
-                          filtro = valor.toLowerCase();
-                        });
-                      },
-                      onSubmitted: (value) {
-                        setState(() {
-                          visibilidadeOnSubmitPesquisaDeuCerto = false;
-                        });
-                      },
-                    )
-                    : SizedBox(),
-              ],
-            ),
-          ),
+                      child: Padding(
+                        padding: EdgeInsetsGeometry.only(left: 50),
+                        child:
+                            (visibilidadeOnSubmitPesquisaDeuCerto == true)
+                                ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    item('Guitarra'),
+                                    item('Bateria'),
+                                    item('Saxofone'),
+                                    item('Baixo'),
+                                    item('Gaita'),
+                                    item('Flauta'),
+                                  ],
+                                )
+                                : SizedBox(),
+                      ),
+                    ),
+                    (visibilidadeOnSubmitPesquisaDeuCerto == true)
+                        ? TextField(
+                          decoration: const InputDecoration(
+                            labelText: "Buscar produto...",
+                            border: OutlineInputBorder(),
+                          ),
+                          onChanged: (valor) {
+                            setState(() {
+                              filtro = valor.toLowerCase();
+                            });
+                          },
+                          onSubmitted: (value) {
+                            setState(() {
+                              visibilidadeOnSubmitPesquisaDeuCerto = false;
+                            });
+                          },
+                        )
+                        : SizedBox(),
+                  ],
+                ),
+              )
+              : Visibility(visible: categoria, child: Text('Teste')),
         ],
         bottomNavigationBar: Container(
           height: 65,
@@ -641,13 +645,23 @@ class MainState extends State<Main> {
             mainAxisAlignment: MainAxisAlignment.center,
             spacing: 20,
             children: [
-              GestureDetector(
-                onTap: () {},
-                child: Image.asset(
-                  'img/MusicNoteList.png',
-                  width: 120,
-                  height: 100,
-                ),
+              Builder(
+                builder: (context) {
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        srcCateg = true;
+                        categoria = !categoria;
+                        pesquisa = false;
+                      });
+                    },
+                    child: Image.asset(
+                      'img/MusicNoteList.png',
+                      width: 120,
+                      height: 100,
+                    ),
+                  );
+                },
               ),
 
               Builder(
@@ -666,11 +680,6 @@ class MainState extends State<Main> {
                       );
                     },
                     child: Icon(Icons.home, size: 60, color: Colors.white),
-                    // child: Image.asset(
-                    //   'img/Casa-icon.png',
-                    //   width: 65,
-                    //   height: 65,
-                    // ),
                   );
                 },
               ),
@@ -679,6 +688,8 @@ class MainState extends State<Main> {
                 onTap: () {
                   setState(() {
                     pesquisa = !pesquisa;
+                    categoria = false;
+                    srcCateg = false;
                     visibilidadeOnSubmit = !visibilidadeOnSubmit;
                     visibilidadeOnSubmitPesquisaDeuCerto = true;
                   });
@@ -748,7 +759,7 @@ class _ContadorAnimadoState extends State<ContadorAnimado>
             Text(
               '${_animation.value}+',
               style: GoogleFonts.aoboshiOne(
-                fontSize: 30,
+                fontSize: 27,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
@@ -756,7 +767,7 @@ class _ContadorAnimadoState extends State<ContadorAnimado>
             Text(
               widget.descricao,
               textAlign: TextAlign.center,
-              style: GoogleFonts.poppins(fontSize: 14, color: Colors.white70),
+              style: GoogleFonts.poppins(fontSize: 11, color: Colors.white70),
             ),
           ],
         );

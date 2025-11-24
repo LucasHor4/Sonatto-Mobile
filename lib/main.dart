@@ -11,6 +11,9 @@ import 'package:flutter/services.dart';
 void main() {
   runApp(Main());
 }
+// flutter clean
+// flutter pub get
+// flutter build apk --release
 
 class Main extends StatefulWidget {
   // const Main({super.key});
@@ -239,46 +242,44 @@ class MainState extends State<Main> {
                   ),
 
                   SliverToBoxAdapter(
-                    
-                      child: Container(
-                        decoration: BoxDecoration(color: Colors.black),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Image.asset(
-                              'img/fender.png',
-                              width: 80,
-                              height: 55,
-                              fit: BoxFit.fitWidth,
-                            ),
-                            Image.asset(
-                              'img/roland.png',
-                              width: 80,
-                              height: 55,
-                              fit: BoxFit.fitWidth,
-                            ),
-                            Image.asset(
-                              'img/gibson.png',
-                              width: 80,
-                              height: 55,
-                              fit: BoxFit.fitWidth,
-                            ),
-                            Image.asset(
-                              'img/pearl.png',
-                              width: 80,
-                              height: 55,
-                              fit: BoxFit.fitWidth,
-                            ),
-                            Image.asset(
-                              'img/yamaha.png',
-                              width: 80,
-                              height: 55,
-                              fit: BoxFit.fitWidth,
-                            ),
-                          ],
-                        ),
+                    child: Container(
+                      decoration: BoxDecoration(color: Colors.black),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Image.asset(
+                            'img/fender.png',
+                            width: 80,
+                            height: 55,
+                            fit: BoxFit.fitWidth,
+                          ),
+                          Image.asset(
+                            'img/roland.png',
+                            width: 80,
+                            height: 55,
+                            fit: BoxFit.fitWidth,
+                          ),
+                          Image.asset(
+                            'img/gibson.png',
+                            width: 80,
+                            height: 55,
+                            fit: BoxFit.fitWidth,
+                          ),
+                          Image.asset(
+                            'img/pearl.png',
+                            width: 80,
+                            height: 55,
+                            fit: BoxFit.fitWidth,
+                          ),
+                          Image.asset(
+                            'img/yamaha.png',
+                            width: 80,
+                            height: 55,
+                            fit: BoxFit.fitWidth,
+                          ),
+                        ],
                       ),
-                    
+                    ),
                   ),
 
                   //Parte que vai aparecer apenas quando der enter na pesquisa
@@ -623,8 +624,7 @@ class MainState extends State<Main> {
                       },
                       onSubmitted: (value) {
                         setState(() {
-                          visibilidadeOnSubmitPesquisaDeuCerto =
-                              false;
+                          visibilidadeOnSubmitPesquisaDeuCerto = false;
                         });
                       },
                     )
@@ -665,7 +665,7 @@ class MainState extends State<Main> {
                         curve: Curves.easeInOut,
                       );
                     },
-                    child: Icon(Icons.home, size: 60, color: Colors.white,),
+                    child: Icon(Icons.home, size: 60, color: Colors.white),
                     // child: Image.asset(
                     //   'img/Casa-icon.png',
                     //   width: 65,

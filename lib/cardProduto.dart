@@ -60,10 +60,10 @@ class CardProd extends StatelessWidget {
         clipBehavior: Clip.hardEdge,
         child: ListView(
           padding: EdgeInsets.only(left: 9, right: 9, bottom: 15, top: 2),
+          physics: NeverScrollableScrollPhysics(),
           children: [
             Padding(
               padding: EdgeInsetsGeometry.only(),
-
               child: Image.network(
                 //pra pegar as imagens com os links da net
                 imagem,

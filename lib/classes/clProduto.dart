@@ -1,6 +1,7 @@
 class ProdutoClass {
 late int IdProduto;
   late String NomeProduto;
+  late String Categoria;
   late String MarcaProduto;
   late double Preco;
   late String Descricao;
@@ -10,6 +11,7 @@ late int IdProduto;
   ProdutoClass({
     this.IdProduto = 0,
     this.NomeProduto = "",
+    this.Categoria = "",
     this.MarcaProduto = "",
     this.Preco = 0.0,
     this.Descricao = "",
@@ -20,6 +22,7 @@ late int IdProduto;
   ProdutoClass.fromJson(Map<String, dynamic> json)
       : IdProduto = json['IdProduto'] ?? json['idProduto'] ?? 0,
         NomeProduto = json['NomeProduto'] ?? '',
+        Categoria = json['Categoria'] ?? '',
         MarcaProduto = json['MarcaProduto'] ?? json['Marca'] ?? '',
         Preco = (json['Preco'] ?? 0).toDouble(),
         Descricao = json['Descricao'] ?? '',
@@ -31,6 +34,7 @@ late int IdProduto;
   Map<String, dynamic> toJson() => {
         'IdProduto': IdProduto,
         'NomeProduto': NomeProduto,
+        'Categoria': Categoria,
         'MarcaProduto': MarcaProduto,
         'Preco': Preco,
         'Descricao': Descricao,

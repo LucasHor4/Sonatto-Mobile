@@ -65,16 +65,40 @@ class MainState extends State<Main> {
   }
 
   String filtro = '';
+  String filtroCat = '';
   bool pesquisa = false;
   bool categoria = false;
   bool srcCateg = false;
   bool visibilidadeOnSubmit = true;
   bool visibilidadeOnSubmitPesquisaDeuCerto = true;
+  bool TpesquisaFCategoria = true;
+
+  List<String> tiposDeProd = [
+    'Guitarra',
+    'Bateria',
+    'Saxofone',
+    'Baixo',
+    'Gaita',
+    'Piano',
+  ];
+  List<String> categoriasProd = ['Sopro', 'Cordas', 'Percussão', 'Teclas'];
 
   Widget item(String nome) {
     return Row(
       children: [
-        Text('+'),
+        Text('+', style: TextStyle(fontSize: 30)),
+        TextButton(
+          onPressed: () {},
+          child: Text(nome, style: TextStyle(color: Colors.black)),
+        ),
+      ],
+    );
+  }
+
+  Widget item2(String nome) {
+    return Row(
+      children: [
+        Text('♪', style: TextStyle(color: Colors.black)),
         TextButton(
           onPressed: () {},
           child: Text(nome, style: TextStyle(color: Colors.black)),
@@ -96,6 +120,7 @@ class MainState extends State<Main> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        resizeToAvoidBottomInset: true,
         appBar: AppBar(
           backgroundColor: Colors.white,
           title: Image.asset('img/sonatto_logo.png', width: 200, height: 400),
@@ -120,6 +145,12 @@ class MainState extends State<Main> {
                         (p) => p.NomeProduto.toLowerCase().contains(filtro),
                       )
                       .toList();
+              var produtosListFiltroCategoria =
+                  snapshot.data!
+                      .where(
+                        (p) => p.Categoria.toLowerCase().contains(filtroCat),
+                      )
+                      .toList();
               if (produtosListFiltrado.isEmpty) {
                 return Center(
                   child: Text(
@@ -131,6 +162,8 @@ class MainState extends State<Main> {
               final produtosList = snapshot.data!;
               final lancamentos = produtosList.toList();
               final maisVendidos = produtosList.toList();
+              maisVendidos.sort((a, b) => b.Avaliacao.compareTo(a.Avaliacao));
+
               final randomizados = (produtosList.toList()..shuffle());
               return CustomScrollView(
                 slivers: [
@@ -310,7 +343,10 @@ class MainState extends State<Main> {
                             context,
                             index,
                           ) {
-                            final p = produtosListFiltrado[index];
+                            final p =
+                                (TpesquisaFCategoria == true)
+                                    ? produtosListFiltrado[index]
+                                    : produtosListFiltroCategoria[index];
                             return CardProd(
                               nome: p.NomeProduto,
                               marca: p.MarcaProduto,
@@ -587,7 +623,10 @@ class MainState extends State<Main> {
                     Center(
                       child:
                           (visibilidadeOnSubmitPesquisaDeuCerto == true)
-                              ? Text('Sugestão de pesquisa')
+                              ? Text(
+                                'Sugestão de pesquisa',
+                                style: TextStyle(fontSize: 30),
+                              )
                               : SizedBox(),
                     ),
                     Padding(
@@ -603,12 +642,96 @@ class MainState extends State<Main> {
                                 ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    item('Guitarra'),
-                                    item('Bateria'),
-                                    item('Saxofone'),
-                                    item('Baixo'),
-                                    item('Gaita'),
-                                    item('Flauta'),
+                                    Builder(
+                                      builder: (context) {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              filtro =
+                                                  tiposDeProd[0].toLowerCase();
+                                              visibilidadeOnSubmitPesquisaDeuCerto =
+                                                  false;
+                                            });
+                                          },
+                                          child: item(tiposDeProd[0]),
+                                        );
+                                      },
+                                    ),
+                                    Builder(
+                                      builder: (context) {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              filtro =
+                                                  tiposDeProd[1].toLowerCase();
+                                              visibilidadeOnSubmitPesquisaDeuCerto =
+                                                  false;
+                                            });
+                                          },
+                                          child: item(tiposDeProd[1]),
+                                        );
+                                      },
+                                    ),
+                                    Builder(
+                                      builder: (context) {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              filtro =
+                                                  tiposDeProd[2].toLowerCase();
+                                              visibilidadeOnSubmitPesquisaDeuCerto =
+                                                  false;
+                                            });
+                                          },
+                                          child: item(tiposDeProd[2]),
+                                        );
+                                      },
+                                    ),
+                                    Builder(
+                                      builder: (context) {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              filtro =
+                                                  tiposDeProd[3].toLowerCase();
+                                              visibilidadeOnSubmitPesquisaDeuCerto =
+                                                  false;
+                                            });
+                                          },
+                                          child: item(tiposDeProd[3]),
+                                        );
+                                      },
+                                    ),
+                                    Builder(
+                                      builder: (context) {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              filtro =
+                                                  tiposDeProd[4].toLowerCase();
+                                              visibilidadeOnSubmitPesquisaDeuCerto =
+                                                  false;
+                                            });
+                                          },
+                                          child: item(tiposDeProd[4]),
+                                        );
+                                      },
+                                    ),
+                                    Builder(
+                                      builder: (context) {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              filtro =
+                                                  tiposDeProd[5].toLowerCase();
+                                              visibilidadeOnSubmitPesquisaDeuCerto =
+                                                  false;
+                                            });
+                                          },
+                                          child: item(tiposDeProd[5]),
+                                        );
+                                      },
+                                    ),
                                   ],
                                 )
                                 : SizedBox(),
@@ -635,7 +758,92 @@ class MainState extends State<Main> {
                   ],
                 ),
               )
-              : Visibility(visible: categoria, child: Text('Teste')),
+              : Visibility(
+                visible: categoria,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsetsGeometry.only(
+                        right: 300,
+                        top: 1,
+                        bottom: 10,
+                      ),
+                      child: Padding(
+                        padding: EdgeInsetsGeometry.only(left: 50),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Builder(
+                              builder: (context) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      filtroCat =
+                                          categoriasProd[0].toLowerCase();
+                                      visibilidadeOnSubmitPesquisaDeuCerto =
+                                          false;
+                                      TpesquisaFCategoria = false;
+                                    });
+                                  },
+                                  child: item(categoriasProd[0]),
+                                );
+                              },
+                            ),
+                            Builder(
+                              builder: (context) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      filtroCat =
+                                          categoriasProd[1].toLowerCase();
+                                      visibilidadeOnSubmitPesquisaDeuCerto =
+                                          false;
+                                      TpesquisaFCategoria = false;
+                                    });
+                                  },
+                                  child: item(categoriasProd[1]),
+                                );
+                              },
+                            ),
+                            Builder(
+                              builder: (context) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      filtroCat =
+                                          categoriasProd[2].toLowerCase();
+                                      visibilidadeOnSubmitPesquisaDeuCerto =
+                                          false;
+                                      TpesquisaFCategoria = false;
+                                    });
+                                  },
+                                  child: item(categoriasProd[2]),
+                                );
+                              },
+                            ),
+                            Builder(
+                              builder: (context) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      filtroCat =
+                                          categoriasProd[3].toLowerCase();
+                                      visibilidadeOnSubmitPesquisaDeuCerto =
+                                          false;
+                                      TpesquisaFCategoria = false;
+                                    });
+                                  },
+                                  child: item(categoriasProd[3]),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
         ],
         bottomNavigationBar: Container(
           height: 65,
@@ -653,6 +861,9 @@ class MainState extends State<Main> {
                         srcCateg = true;
                         categoria = !categoria;
                         pesquisa = false;
+                        TpesquisaFCategoria = false;
+                        visibilidadeOnSubmit = !visibilidadeOnSubmit;
+                        visibilidadeOnSubmitPesquisaDeuCerto = true;
                       });
                     },
                     child: Image.asset(
@@ -690,6 +901,7 @@ class MainState extends State<Main> {
                     pesquisa = !pesquisa;
                     categoria = false;
                     srcCateg = false;
+                    TpesquisaFCategoria = true;
                     visibilidadeOnSubmit = !visibilidadeOnSubmit;
                     visibilidadeOnSubmitPesquisaDeuCerto = true;
                   });

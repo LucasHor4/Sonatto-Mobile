@@ -1,3 +1,3 @@
-# mobile_sonatto
+# Mobile Sonatto
 
-A new Flutter project.
+O catalogo de itens da loja Sonatto.

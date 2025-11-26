@@ -72,6 +72,7 @@ class MainState extends State<Main> {
     }
     return s[0].toUpperCase() + s.substring(1);
   }
+
   bool catButtonIs = true;
   bool srcButtonIs = true;
   bool pesquisa = false;
@@ -332,7 +333,9 @@ class MainState extends State<Main> {
                           child: Text(
                             (TpesquisaFCategoria == true)
                                 ? 'Resultado para:${filtro}'
-                                : '${firstUppercase(filtroCat)}',
+                                : (filtroCat != '')
+                                ? '${firstUppercase(filtroCat)}'
+                                : 'Categoria',
                             style: GoogleFonts.anton(
                               fontSize: 40,
                               fontWeight: FontWeight.w500,
@@ -349,26 +352,28 @@ class MainState extends State<Main> {
                           vertical: 8,
                         ),
                         sliver: SliverGrid(
-                          delegate: SliverChildBuilderDelegate((
-                            context,
-                            index,
-                          ) {
-                            final p =
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) {
+                              final p =
+                                  (TpesquisaFCategoria == true)
+                                      ? produtosListFiltrado[index]
+                                      : produtosListFiltroCategoria[index];
+                              return CardProd(
+                                nome: p.NomeProduto,
+                                marca: p.MarcaProduto,
+                                imagem:
+                                    p.Imagens.isEmpty
+                                        ? 'https://via.placeholder.com/200'
+                                        : p.Imagens.first,
+                                preco: p.Preco,
+                                navMain: p.IdProduto - 1,
+                              );
+                            },
+                            childCount:
                                 (TpesquisaFCategoria == true)
-                                    ? produtosListFiltrado[index]
-                                    : produtosListFiltroCategoria[index];
-                            return CardProd(
-                              nome: p.NomeProduto,
-                              marca: p.MarcaProduto,
-                              imagem:
-                                  p.Imagens.isEmpty
-                                      ? 'https://via.placeholder.com/200'
-                                      : p.Imagens.first,
-                              preco: p.Preco,
-                              navMain: p.IdProduto - 1,
-                            );
-                          }, childCount: (TpesquisaFCategoria == true) ?
-                          produtosListFiltrado.length : produtosListFiltroCategoria.length),
+                                    ? produtosListFiltrado.length
+                                    : produtosListFiltroCategoria.length,
+                          ),
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
@@ -803,6 +808,7 @@ class MainState extends State<Main> {
                                           false;
                                       TpesquisaFCategoria = false;
                                       categoria = false;
+                                      visibilidadeOnSubmit = !visibilidadeOnSubmit;
                                     });
                                   },
                                   child: item(categoriasProd[0]),
@@ -820,6 +826,7 @@ class MainState extends State<Main> {
                                           false;
                                       TpesquisaFCategoria = false;
                                       categoria = false;
+                                      visibilidadeOnSubmit = !visibilidadeOnSubmit;
                                     });
                                   },
                                   child: item(categoriasProd[1]),
@@ -837,6 +844,7 @@ class MainState extends State<Main> {
                                           false;
                                       TpesquisaFCategoria = false;
                                       categoria = false;
+                                      visibilidadeOnSubmit = !visibilidadeOnSubmit;
                                     });
                                   },
                                   child: item(categoriasProd[2]),
@@ -854,6 +862,7 @@ class MainState extends State<Main> {
                                           false;
                                       TpesquisaFCategoria = false;
                                       categoria = false;
+                                      visibilidadeOnSubmit = !visibilidadeOnSubmit;
                                     });
                                   },
                                   child: item(categoriasProd[3]),
@@ -879,19 +888,22 @@ class MainState extends State<Main> {
               Builder(
                 builder: (context) {
                   return GestureDetector(
-                    onTap: (catButtonIs == true) ? () {
-                      setState(() {
-                        pesquisa = false;
-                        categoria = !categoria;
-                        srcCateg = true;
-                        TpesquisaFCategoria = false;
-                        visibilidadeOnSubmit = !visibilidadeOnSubmit;
-                        visibilidadeOnSubmitPesquisaDeuCerto = true;
-                        filtroCat = '';
-                        filtro = '';
-                        srcButtonIs = !srcButtonIs;
-                      });
-                    } : null,
+                    onTap:
+                        (catButtonIs == true)
+                            ? () {
+                              setState(() {
+                                pesquisa = false;
+                                categoria = !categoria;
+                                srcCateg = true;
+                                TpesquisaFCategoria = false;
+                                visibilidadeOnSubmit = true;
+                                visibilidadeOnSubmitPesquisaDeuCerto = !visibilidadeOnSubmitPesquisaDeuCerto;
+                                filtroCat = '';
+                                filtro = '';
+                                srcButtonIs = !srcButtonIs;
+                              });
+                            }
+                            : null,
                     child: Image.asset(
                       'img/MusicNoteList.png',
                       width: 120,
@@ -922,19 +934,22 @@ class MainState extends State<Main> {
               ),
 
               GestureDetector(
-                onTap: (srcButtonIs == true) ? () {
-                  setState(() {
-                    pesquisa = !pesquisa;
-                    categoria = false;
-                    srcCateg = false;
-                    TpesquisaFCategoria = true;
-                    visibilidadeOnSubmit = !visibilidadeOnSubmit;
-                    visibilidadeOnSubmitPesquisaDeuCerto = true;
-                    filtroCat = '';
-                    filtro = '';
-                    catButtonIs = !catButtonIs;
-                  });
-                } : null,
+                onTap:
+                    (srcButtonIs == true)
+                        ? () {
+                          setState(() {
+                            pesquisa = !pesquisa;
+                            categoria = false;
+                            srcCateg = false;
+                            TpesquisaFCategoria = true;
+                            visibilidadeOnSubmit = !visibilidadeOnSubmit;
+                            visibilidadeOnSubmitPesquisaDeuCerto = true;
+                            filtroCat = '';
+                            filtro = '';
+                            catButtonIs = !catButtonIs;
+                          });
+                        }
+                        : null,
                 child: Image.asset('img/Search.png', width: 120, height: 100),
               ),
             ],

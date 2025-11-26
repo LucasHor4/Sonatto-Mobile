@@ -66,6 +66,14 @@ class MainState extends State<Main> {
 
   String filtro = '';
   String filtroCat = '';
+  String firstUppercase(String s) {
+    if (s == null || s.isEmpty) {
+      return s;
+    }
+    return s[0].toUpperCase() + s.substring(1);
+  }
+  bool catButtonIs = true;
+  bool srcButtonIs = true;
   bool pesquisa = false;
   bool categoria = false;
   bool srcCateg = false;
@@ -322,7 +330,9 @@ class MainState extends State<Main> {
                       ? SliverToBoxAdapter(
                         child: Center(
                           child: Text(
-                            'Resultado para:${filtro}',
+                            (TpesquisaFCategoria == true)
+                                ? 'Resultado para:${filtro}'
+                                : '${firstUppercase(filtroCat)}',
                             style: GoogleFonts.anton(
                               fontSize: 40,
                               fontWeight: FontWeight.w500,
@@ -357,7 +367,8 @@ class MainState extends State<Main> {
                               preco: p.Preco,
                               navMain: p.IdProduto - 1,
                             );
-                          }, childCount: produtosListFiltrado.length),
+                          }, childCount: (TpesquisaFCategoria == true) ?
+                          produtosListFiltrado.length : produtosListFiltroCategoria.length),
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
@@ -791,6 +802,7 @@ class MainState extends State<Main> {
                                       visibilidadeOnSubmitPesquisaDeuCerto =
                                           false;
                                       TpesquisaFCategoria = false;
+                                      categoria = false;
                                     });
                                   },
                                   child: item(categoriasProd[0]),
@@ -807,6 +819,7 @@ class MainState extends State<Main> {
                                       visibilidadeOnSubmitPesquisaDeuCerto =
                                           false;
                                       TpesquisaFCategoria = false;
+                                      categoria = false;
                                     });
                                   },
                                   child: item(categoriasProd[1]),
@@ -823,6 +836,7 @@ class MainState extends State<Main> {
                                       visibilidadeOnSubmitPesquisaDeuCerto =
                                           false;
                                       TpesquisaFCategoria = false;
+                                      categoria = false;
                                     });
                                   },
                                   child: item(categoriasProd[2]),
@@ -839,6 +853,7 @@ class MainState extends State<Main> {
                                       visibilidadeOnSubmitPesquisaDeuCerto =
                                           false;
                                       TpesquisaFCategoria = false;
+                                      categoria = false;
                                     });
                                   },
                                   child: item(categoriasProd[3]),
@@ -864,16 +879,19 @@ class MainState extends State<Main> {
               Builder(
                 builder: (context) {
                   return GestureDetector(
-                    onTap: () {
+                    onTap: (catButtonIs == true) ? () {
                       setState(() {
-                        srcCateg = true;
-                        categoria = !categoria;
                         pesquisa = false;
+                        categoria = !categoria;
+                        srcCateg = true;
                         TpesquisaFCategoria = false;
                         visibilidadeOnSubmit = !visibilidadeOnSubmit;
                         visibilidadeOnSubmitPesquisaDeuCerto = true;
+                        filtroCat = '';
+                        filtro = '';
+                        srcButtonIs = !srcButtonIs;
                       });
-                    },
+                    } : null,
                     child: Image.asset(
                       'img/MusicNoteList.png',
                       width: 120,
@@ -904,7 +922,7 @@ class MainState extends State<Main> {
               ),
 
               GestureDetector(
-                onTap: () {
+                onTap: (srcButtonIs == true) ? () {
                   setState(() {
                     pesquisa = !pesquisa;
                     categoria = false;
@@ -912,8 +930,11 @@ class MainState extends State<Main> {
                     TpesquisaFCategoria = true;
                     visibilidadeOnSubmit = !visibilidadeOnSubmit;
                     visibilidadeOnSubmitPesquisaDeuCerto = true;
+                    filtroCat = '';
+                    filtro = '';
+                    catButtonIs = !catButtonIs;
                   });
-                },
+                } : null,
                 child: Image.asset('img/Search.png', width: 120, height: 100),
               ),
             ],

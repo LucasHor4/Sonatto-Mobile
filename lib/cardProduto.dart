@@ -142,7 +142,7 @@ class CardProd extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                child: Text('Comprar', style: TextStyle(fontSize: 11)),
+                child: Text('Veja mais', style: TextStyle(fontSize: 11)),
               ),
             ),
           ],

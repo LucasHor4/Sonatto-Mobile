@@ -4,7 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'classes/clProduto.dart';
-import 'package:mobile_sonatto/Main.dart';
+import 'package:Sonatto/Main.dart';
 
 class Produtos extends StatefulWidget {
   final int produtoId;
@@ -78,6 +78,7 @@ class ProdutosState extends State<Produtos> {
                             Image.network(
                               imagens[i],
                               width: double.infinity,
+                              height: double.infinity,
                               fit: BoxFit.cover,
                               loadingBuilder:
                                   (c, child, progress) =>
@@ -248,36 +249,6 @@ class ProdutosState extends State<Produtos> {
             spacing: 20,
             children: [
               GestureDetector(
-                onTap: () {},
-                child: Image.asset(
-                  'img/MusicNoteList.png',
-                  width: 120,
-                  height: 100,
-                ),
-              ),
-
-              Builder(
-                builder: (context) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-
-                      // Scrollable.ensureVisible(
-                      //   homeKey.currentContext!,
-                      //   duration: Duration(milliseconds: 500),
-                      //   curve: Curves.easeInOut,
-                      // );
-                    },
-                    child: Image.asset(
-                      'img/Casa-icon.png',
-                      width: 120,
-                      height: 100,
-                    ),
-                  );
-                },
-              ),
-
-              GestureDetector(
                 onTap: () {
                   setState(() {
                     // pesquisa = !pesquisa;
@@ -289,7 +260,7 @@ class ProdutosState extends State<Produtos> {
                     );
                   });
                 },
-                child: Image.asset('img/Search.png', width: 120, height: 100),
+                child: Icon(Icons.home, size: 60, color: Colors.white),
               ),
             ],
           ),

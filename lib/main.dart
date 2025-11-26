@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_sonatto/produtos.dart';
-import 'package:mobile_sonatto/cardProduto.dart';
+import 'package:Sonatto/produtos.dart';
+import 'package:Sonatto/cardProduto.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'classes/clProduto.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,6 +11,9 @@ import 'package:flutter/services.dart';
 void main() {
   runApp(Main());
 }
+// flutter clean
+// flutter pub get
+// flutter build apk --release
 
 class Main extends StatefulWidget {
   // const Main({super.key});
@@ -62,14 +65,49 @@ class MainState extends State<Main> {
   }
 
   String filtro = '';
+  String filtroCat = '';
+  String firstUppercase(String s) {
+    if (s == null || s.isEmpty) {
+      return s;
+    }
+    return s[0].toUpperCase() + s.substring(1);
+  }
+
+  bool catButtonIs = true;
+  bool srcButtonIs = true;
   bool pesquisa = false;
+  bool categoria = false;
+  bool srcCateg = false;
   bool visibilidadeOnSubmit = true;
   bool visibilidadeOnSubmitPesquisaDeuCerto = true;
+  bool TpesquisaFCategoria = true;
+
+  List<String> tiposDeProd = [
+    'Guitarra',
+    'Bateria',
+    'Saxofone',
+    'Baixo',
+    'Gaita',
+    'Piano',
+  ];
+  List<String> categoriasProd = ['Sopro', 'Cordas', 'Percussão', 'Teclas'];
 
   Widget item(String nome) {
     return Row(
       children: [
-        Positioned(child: Text('+')),
+        Text('+', style: TextStyle(fontSize: 30)),
+        TextButton(
+          onPressed: () {},
+          child: Text(nome, style: TextStyle(color: Colors.black)),
+        ),
+      ],
+    );
+  }
+
+  Widget item2(String nome) {
+    return Row(
+      children: [
+        Text('♪', style: TextStyle(color: Colors.black)),
         TextButton(
           onPressed: () {},
           child: Text(nome, style: TextStyle(color: Colors.black)),
@@ -91,6 +129,7 @@ class MainState extends State<Main> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        resizeToAvoidBottomInset: true,
         appBar: AppBar(
           backgroundColor: Colors.white,
           title: Image.asset('img/sonatto_logo.png', width: 200, height: 400),
@@ -115,6 +154,12 @@ class MainState extends State<Main> {
                         (p) => p.NomeProduto.toLowerCase().contains(filtro),
                       )
                       .toList();
+              var produtosListFiltroCategoria =
+                  snapshot.data!
+                      .where(
+                        (p) => p.Categoria.toLowerCase().contains(filtroCat),
+                      )
+                      .toList();
               if (produtosListFiltrado.isEmpty) {
                 return Center(
                   child: Text(
@@ -126,6 +171,8 @@ class MainState extends State<Main> {
               final produtosList = snapshot.data!;
               final lancamentos = produtosList.toList();
               final maisVendidos = produtosList.toList();
+              maisVendidos.sort((a, b) => b.Avaliacao.compareTo(a.Avaliacao));
+
               final randomizados = (produtosList.toList()..shuffle());
               return CustomScrollView(
                 slivers: [
@@ -153,7 +200,7 @@ class MainState extends State<Main> {
                                   sigmaY: 15,
                                 ),
                                 child: Container(
-                                  height: 500,
+                                  height: 700,
                                   color: Colors.white.withOpacity(0.1),
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 24,
@@ -167,7 +214,7 @@ class MainState extends State<Main> {
                                         textAlign: TextAlign.start,
                                         softWrap: true,
                                         style: GoogleFonts.aoboshiOne(
-                                          fontSize: 32,
+                                          fontSize: 25,
                                           fontWeight: FontWeight.w700,
                                           color: Colors.white,
                                           shadows: [
@@ -186,7 +233,7 @@ class MainState extends State<Main> {
                                         textAlign: TextAlign.start,
                                         softWrap: true,
                                         style: GoogleFonts.aoboshiOne(
-                                          fontSize: 15,
+                                          fontSize: 14,
                                           fontWeight: FontWeight.w700,
                                           color: Colors.white,
                                           shadows: [
@@ -239,44 +286,42 @@ class MainState extends State<Main> {
                   ),
 
                   SliverToBoxAdapter(
-                    child: Positioned(
-                      child: Container(
-                        decoration: BoxDecoration(color: Colors.black),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Image.asset(
-                              'img/fender.png',
-                              width: 80,
-                              height: 55,
-                              fit: BoxFit.fitWidth,
-                            ),
-                            Image.asset(
-                              'img/roland.png',
-                              width: 80,
-                              height: 55,
-                              fit: BoxFit.fitWidth,
-                            ),
-                            Image.asset(
-                              'img/gibson.png',
-                              width: 80,
-                              height: 55,
-                              fit: BoxFit.fitWidth,
-                            ),
-                            Image.asset(
-                              'img/pearl.png',
-                              width: 80,
-                              height: 55,
-                              fit: BoxFit.fitWidth,
-                            ),
-                            Image.asset(
-                              'img/yamaha.png',
-                              width: 80,
-                              height: 55,
-                              fit: BoxFit.fitWidth,
-                            ),
-                          ],
-                        ),
+                    child: Container(
+                      decoration: BoxDecoration(color: Colors.black),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Image.asset(
+                            'img/fender.png',
+                            width: 60,
+                            height: 55,
+                            fit: BoxFit.fitWidth,
+                          ),
+                          Image.asset(
+                            'img/roland.png',
+                            width: 60,
+                            height: 55,
+                            fit: BoxFit.fitWidth,
+                          ),
+                          Image.asset(
+                            'img/gibson.png',
+                            width: 60,
+                            height: 55,
+                            fit: BoxFit.fitWidth,
+                          ),
+                          Image.asset(
+                            'img/pearl.png',
+                            width: 60,
+                            height: 55,
+                            fit: BoxFit.fitWidth,
+                          ),
+                          Image.asset(
+                            'img/yamaha.png',
+                            width: 60,
+                            height: 55,
+                            fit: BoxFit.fitWidth,
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -286,7 +331,11 @@ class MainState extends State<Main> {
                       ? SliverToBoxAdapter(
                         child: Center(
                           child: Text(
-                            'Resultado para:${filtro}',
+                            (TpesquisaFCategoria == true)
+                                ? 'Resultado para:${filtro}'
+                                : (filtroCat != '')
+                                ? '${firstUppercase(filtroCat)}'
+                                : 'Categoria',
                             style: GoogleFonts.anton(
                               fontSize: 40,
                               fontWeight: FontWeight.w500,
@@ -303,28 +352,34 @@ class MainState extends State<Main> {
                           vertical: 8,
                         ),
                         sliver: SliverGrid(
-                          delegate: SliverChildBuilderDelegate((
-                            context,
-                            index,
-                          ) {
-                            final p = produtosListFiltrado[index];
-                            return CardProd(
-                              nome: p.NomeProduto,
-                              marca: p.MarcaProduto,
-                              imagem:
-                                  p.Imagens.isEmpty
-                                      ? 'https://via.placeholder.com/200'
-                                      : p.Imagens.first,
-                              preco: p.Preco,
-                              navMain: p.IdProduto - 1,
-                            );
-                          }, childCount: produtosListFiltrado.length),
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) {
+                              final p =
+                                  (TpesquisaFCategoria == true)
+                                      ? produtosListFiltrado[index]
+                                      : produtosListFiltroCategoria[index];
+                              return CardProd(
+                                nome: p.NomeProduto,
+                                marca: p.MarcaProduto,
+                                imagem:
+                                    p.Imagens.isEmpty
+                                        ? 'https://via.placeholder.com/200'
+                                        : p.Imagens.first,
+                                preco: p.Preco,
+                                navMain: p.IdProduto - 1,
+                              );
+                            },
+                            childCount:
+                                (TpesquisaFCategoria == true)
+                                    ? produtosListFiltrado.length
+                                    : produtosListFiltroCategoria.length,
+                          ),
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
                                 mainAxisSpacing: 8,
                                 crossAxisSpacing: 8,
-                                childAspectRatio: 0.73,
+                                childAspectRatio: 0.57,
                               ),
                         ),
                       )
@@ -379,7 +434,7 @@ class MainState extends State<Main> {
                                 crossAxisCount: 2,
                                 mainAxisSpacing: 8,
                                 crossAxisSpacing: 8,
-                                childAspectRatio: 0.73,
+                                childAspectRatio: 0.57,
                               ),
                         ),
                       )
@@ -471,7 +526,7 @@ class MainState extends State<Main> {
                                 crossAxisCount: 2,
                                 mainAxisSpacing: 8,
                                 crossAxisSpacing: 8,
-                                childAspectRatio: 0.73,
+                                childAspectRatio: 0.57,
                               ),
                         ),
                       )
@@ -563,7 +618,7 @@ class MainState extends State<Main> {
                                 crossAxisCount: 2,
                                 mainAxisSpacing: 8,
                                 crossAxisSpacing: 8,
-                                childAspectRatio: 0.73,
+                                childAspectRatio: 0.57,
                               ),
                         ),
                       )
@@ -576,62 +631,251 @@ class MainState extends State<Main> {
           ),
         ),
         persistentFooterButtons: [
-          Visibility(
-            visible: pesquisa,
-            child: Column(
-              children: [
-                Center(
-                  child:
-                      (visibilidadeOnSubmitPesquisaDeuCerto == true)
-                          ? Text('Sugestão de pesquisa')
-                          : SizedBox(),
-                ),
-                Padding(
-                  padding: EdgeInsetsGeometry.only(
-                    right: 300,
-                    top: 1,
-                    bottom: 10,
-                  ),
-                  child: Padding(
-                    padding: EdgeInsetsGeometry.only(left: 50),
-                    child:
-                        (visibilidadeOnSubmitPesquisaDeuCerto == true)
-                            ? Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                item('Guitarra'),
-                                item('Bateria'),
-                                item('Saxofone'),
-                                item('Baixo'),
-                                item('Gaita'),
-                                item('Flauta'),
-                              ],
-                            )
-                            : SizedBox(),
-                  ),
-                ),
-                (visibilidadeOnSubmitPesquisaDeuCerto == true)
-                    ? TextField(
-                      decoration: const InputDecoration(
-                        labelText: "Buscar produto...",
-                        border: OutlineInputBorder(),
+          (srcCateg == false)
+              ? Visibility(
+                visible: pesquisa,
+                child: Column(
+                  children: [
+                    Center(
+                      child:
+                          (visibilidadeOnSubmitPesquisaDeuCerto == true)
+                              ? Text(
+                                'Sugestão de pesquisa',
+                                style: TextStyle(fontSize: 30),
+                              )
+                              : SizedBox(),
+                    ),
+                    Padding(
+                      padding: EdgeInsetsGeometry.only(
+                        right: 300,
+                        top: 1,
+                        bottom: 10,
                       ),
-                      onChanged: (valor) {
-                        setState(() {
-                          filtro = valor.toLowerCase();
-                        });
-                      },
-                      onSubmitted: (value) {
-                        setState(() {
-                          visibilidadeOnSubmitPesquisaDeuCerto =
-                              false;
-                        });
-                      },
-                    )
-                    : SizedBox(),
-              ],
-            ),
-          ),
+                      child: Padding(
+                        padding: EdgeInsetsGeometry.only(left: 50),
+                        child:
+                            (visibilidadeOnSubmitPesquisaDeuCerto == true)
+                                ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Builder(
+                                      builder: (context) {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              filtro =
+                                                  tiposDeProd[0].toLowerCase();
+                                              visibilidadeOnSubmitPesquisaDeuCerto =
+                                                  false;
+                                            });
+                                          },
+                                          child: item(tiposDeProd[0]),
+                                        );
+                                      },
+                                    ),
+                                    Builder(
+                                      builder: (context) {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              filtro =
+                                                  tiposDeProd[1].toLowerCase();
+                                              visibilidadeOnSubmitPesquisaDeuCerto =
+                                                  false;
+                                            });
+                                          },
+                                          child: item(tiposDeProd[1]),
+                                        );
+                                      },
+                                    ),
+                                    Builder(
+                                      builder: (context) {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              filtro =
+                                                  tiposDeProd[2].toLowerCase();
+                                              visibilidadeOnSubmitPesquisaDeuCerto =
+                                                  false;
+                                            });
+                                          },
+                                          child: item(tiposDeProd[2]),
+                                        );
+                                      },
+                                    ),
+                                    Builder(
+                                      builder: (context) {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              filtro =
+                                                  tiposDeProd[3].toLowerCase();
+                                              visibilidadeOnSubmitPesquisaDeuCerto =
+                                                  false;
+                                            });
+                                          },
+                                          child: item(tiposDeProd[3]),
+                                        );
+                                      },
+                                    ),
+                                    Builder(
+                                      builder: (context) {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              filtro =
+                                                  tiposDeProd[4].toLowerCase();
+                                              visibilidadeOnSubmitPesquisaDeuCerto =
+                                                  false;
+                                            });
+                                          },
+                                          child: item(tiposDeProd[4]),
+                                        );
+                                      },
+                                    ),
+                                    Builder(
+                                      builder: (context) {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              filtro =
+                                                  tiposDeProd[5].toLowerCase();
+                                              visibilidadeOnSubmitPesquisaDeuCerto =
+                                                  false;
+                                            });
+                                          },
+                                          child: item(tiposDeProd[5]),
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                )
+                                : SizedBox(),
+                      ),
+                    ),
+                    (visibilidadeOnSubmitPesquisaDeuCerto == true)
+                        ? Padding(
+                          padding: EdgeInsetsGeometry.only(
+                            bottom: MediaQuery.of(context).viewInsets.bottom,
+                          ),
+                          child: TextField(
+                            decoration: const InputDecoration(
+                              labelText: "Buscar produto...",
+                              border: OutlineInputBorder(),
+                            ),
+                            onChanged: (valor) {
+                              setState(() {
+                                filtro = valor.toLowerCase();
+                              });
+                            },
+                            onSubmitted: (value) {
+                              setState(() {
+                                visibilidadeOnSubmitPesquisaDeuCerto = false;
+                              });
+                            },
+                          ),
+                        )
+                        : SizedBox(),
+                  ],
+                ),
+              )
+              : Visibility(
+                visible: categoria,
+                child: Column(
+                  children: [
+                    Center(
+                      child: Text('Categorias', style: TextStyle(fontSize: 24)),
+                    ),
+                    Padding(
+                      padding: EdgeInsetsGeometry.only(
+                        right: 300,
+                        top: 1,
+                        bottom: 10,
+                      ),
+                      child: Padding(
+                        padding: EdgeInsetsGeometry.only(left: 50),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Builder(
+                              builder: (context) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      filtroCat =
+                                          categoriasProd[0].toLowerCase();
+                                      visibilidadeOnSubmitPesquisaDeuCerto =
+                                          false;
+                                      TpesquisaFCategoria = false;
+                                      categoria = false;
+                                      visibilidadeOnSubmit = !visibilidadeOnSubmit;
+                                    });
+                                  },
+                                  child: item(categoriasProd[0]),
+                                );
+                              },
+                            ),
+                            Builder(
+                              builder: (context) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      filtroCat =
+                                          categoriasProd[1].toLowerCase();
+                                      visibilidadeOnSubmitPesquisaDeuCerto =
+                                          false;
+                                      TpesquisaFCategoria = false;
+                                      categoria = false;
+                                      visibilidadeOnSubmit = !visibilidadeOnSubmit;
+                                    });
+                                  },
+                                  child: item(categoriasProd[1]),
+                                );
+                              },
+                            ),
+                            Builder(
+                              builder: (context) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      filtroCat =
+                                          categoriasProd[2].toLowerCase();
+                                      visibilidadeOnSubmitPesquisaDeuCerto =
+                                          false;
+                                      TpesquisaFCategoria = false;
+                                      categoria = false;
+                                      visibilidadeOnSubmit = !visibilidadeOnSubmit;
+                                    });
+                                  },
+                                  child: item(categoriasProd[2]),
+                                );
+                              },
+                            ),
+                            Builder(
+                              builder: (context) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      filtroCat =
+                                          categoriasProd[3].toLowerCase();
+                                      visibilidadeOnSubmitPesquisaDeuCerto =
+                                          false;
+                                      TpesquisaFCategoria = false;
+                                      categoria = false;
+                                      visibilidadeOnSubmit = !visibilidadeOnSubmit;
+                                    });
+                                  },
+                                  child: item(categoriasProd[3]),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
         ],
         bottomNavigationBar: Container(
           height: 65,
@@ -641,13 +885,32 @@ class MainState extends State<Main> {
             mainAxisAlignment: MainAxisAlignment.center,
             spacing: 20,
             children: [
-              GestureDetector(
-                onTap: () {},
-                child: Image.asset(
-                  'img/MusicNoteList.png',
-                  width: 120,
-                  height: 100,
-                ),
+              Builder(
+                builder: (context) {
+                  return GestureDetector(
+                    onTap:
+                        (catButtonIs == true)
+                            ? () {
+                              setState(() {
+                                pesquisa = false;
+                                categoria = !categoria;
+                                srcCateg = true;
+                                TpesquisaFCategoria = false;
+                                visibilidadeOnSubmit = true;
+                                visibilidadeOnSubmitPesquisaDeuCerto = !visibilidadeOnSubmitPesquisaDeuCerto;
+                                filtroCat = '';
+                                filtro = '';
+                                srcButtonIs = !srcButtonIs;
+                              });
+                            }
+                            : null,
+                    child: Image.asset(
+                      'img/MusicNoteList.png',
+                      width: 120,
+                      height: 100,
+                    ),
+                  );
+                },
               ),
 
               Builder(
@@ -665,23 +928,28 @@ class MainState extends State<Main> {
                         curve: Curves.easeInOut,
                       );
                     },
-                    child: Image.asset(
-                      'img/Casa-icon.png',
-                      width: 120,
-                      height: 100,
-                    ),
+                    child: Icon(Icons.home, size: 60, color: Colors.white),
                   );
                 },
               ),
 
               GestureDetector(
-                onTap: () {
-                  setState(() {
-                    pesquisa = !pesquisa;
-                    visibilidadeOnSubmit = !visibilidadeOnSubmit;
-                    visibilidadeOnSubmitPesquisaDeuCerto = true;
-                  });
-                },
+                onTap:
+                    (srcButtonIs == true)
+                        ? () {
+                          setState(() {
+                            pesquisa = !pesquisa;
+                            categoria = false;
+                            srcCateg = false;
+                            TpesquisaFCategoria = true;
+                            visibilidadeOnSubmit = !visibilidadeOnSubmit;
+                            visibilidadeOnSubmitPesquisaDeuCerto = true;
+                            filtroCat = '';
+                            filtro = '';
+                            catButtonIs = !catButtonIs;
+                          });
+                        }
+                        : null,
                 child: Image.asset('img/Search.png', width: 120, height: 100),
               ),
             ],
@@ -747,7 +1015,7 @@ class _ContadorAnimadoState extends State<ContadorAnimado>
             Text(
               '${_animation.value}+',
               style: GoogleFonts.aoboshiOne(
-                fontSize: 30,
+                fontSize: 27,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
@@ -755,7 +1023,7 @@ class _ContadorAnimadoState extends State<ContadorAnimado>
             Text(
               widget.descricao,
               textAlign: TextAlign.center,
-              style: GoogleFonts.poppins(fontSize: 14, color: Colors.white70),
+              style: GoogleFonts.poppins(fontSize: 11, color: Colors.white70),
             ),
           ],
         );

@@ -738,21 +738,26 @@ class MainState extends State<Main> {
                       ),
                     ),
                     (visibilidadeOnSubmitPesquisaDeuCerto == true)
-                        ? TextField(
-                          decoration: const InputDecoration(
-                            labelText: "Buscar produto...",
-                            border: OutlineInputBorder(),
+                        ? Padding(
+                          padding: EdgeInsetsGeometry.only(
+                            bottom: MediaQuery.of(context).viewInsets.bottom,
                           ),
-                          onChanged: (valor) {
-                            setState(() {
-                              filtro = valor.toLowerCase();
-                            });
-                          },
-                          onSubmitted: (value) {
-                            setState(() {
-                              visibilidadeOnSubmitPesquisaDeuCerto = false;
-                            });
-                          },
+                          child: TextField(
+                            decoration: const InputDecoration(
+                              labelText: "Buscar produto...",
+                              border: OutlineInputBorder(),
+                            ),
+                            onChanged: (valor) {
+                              setState(() {
+                                filtro = valor.toLowerCase();
+                              });
+                            },
+                            onSubmitted: (value) {
+                              setState(() {
+                                visibilidadeOnSubmitPesquisaDeuCerto = false;
+                              });
+                            },
+                          ),
                         )
                         : SizedBox(),
                   ],
@@ -762,6 +767,9 @@ class MainState extends State<Main> {
                 visible: categoria,
                 child: Column(
                   children: [
+                    Center(
+                      child: Text('Categorias', style: TextStyle(fontSize: 24)),
+                    ),
                     Padding(
                       padding: EdgeInsetsGeometry.only(
                         right: 300,

@@ -4,7 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'classes/clProduto.dart';
-import 'package:mobile_sonatto/Main.dart';
+import 'package:Sonatto/Main.dart';
 
 class Produtos extends StatefulWidget {
   final int produtoId;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_sonatto/produtos.dart';
-import 'package:mobile_sonatto/cardProduto.dart';
+import 'package:Sonatto/produtos.dart';
+import 'package:Sonatto/cardProduto.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'classes/clProduto.dart';
 import 'package:google_fonts/google_fonts.dart';

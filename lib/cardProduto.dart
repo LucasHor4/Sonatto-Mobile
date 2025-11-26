@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mobile_sonatto/classes/clProduto.dart';
-import 'package:mobile_sonatto/produtos.dart';
-import 'package:mobile_sonatto/Main.dart';
+import 'package:Sonatto/classes/clProduto.dart';
+import 'package:Sonatto/produtos.dart';
+import 'package:Sonatto/Main.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 

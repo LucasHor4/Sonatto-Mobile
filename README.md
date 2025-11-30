@@ -3,9 +3,15 @@
   <h1>Bem vindo(a) ao aplicativo mobile da Sonatto©.</h1>
   <h2>Aqui você vai se informar sobre o nosso projeto.</h2>
   <h2>
-    Esse é um aplicativo mobile do Sonatto©, voltado para ser o catalogo do e-commerce para o seu celular, desenvolvido pela emprea Nexore© nas linguagens: 
-    <img src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white">
+    Esse é um aplicativo mobile do Sonatto©, voltado para ser o catalogo do e-commerce para o seu celular, desenvolvido pela emprea Nexore© nas linguagens:  
     <img src="https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white">
+    <img src="https://img.shields.io/badge/C++-00599C?style=for-the-badge&logo=cplusplus&logoColor=white">
+    <img src="https://img.shields.io/badge/CMake-064F8C?style=for-the-badge&logo=cmake&logoColor=white">
+    <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white">
+    <img src="https://img.shields.io/badge/Swift-FA7343?style=for-the-badge&logo=swift&logoColor=white">
+    <img src="https://img.shields.io/badge/C-222222?style=for-the-badge&logo=c&logoColor=white">
+    <img src="https://img.shields.io/badge/Other-808080?style=for-the-badge&logo=code&logoColor=white">
+    com o framework <img src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white">.
   </h2> 
   <h2>Para ver informações detalhadas do sistema acesse a nossa wiki: <a href="https://github.com/LucasHor4/Sonatto-Mobile/wiki">Wiki Sonatto Mobile</a>a</h2>
   <h2>Caso queira saber mais sobre nós da Nexore©, acesse nosso site: <a href="https://nexore.me/">Nexore</a></h2>

@@ -9,5 +9,5 @@
   </h2> 
   <h2>Para ver informações detalhadas do sistema acesse a nossa wiki: <a href="https://github.com/LucasHor4/Sonatto-Mobile/wiki">Wiki Sonatto Mobile</a>a</h2>
   <h2>Caso queira saber mais sobre nós da Nexore©, acesse nosso site: <a href="https://nexore.me/">Nexore</a></h2>
-  <img width="1123" height="632" alt="Group 16" src="https://github.com/user-attachments/assets/06a29efe-e916-485e-9a70-2d53e2ef3f06"/>
+  <img width="auto" height="auto" alt="Group 16" src="https://github.com/user-attachments/assets/06a29efe-e916-485e-9a70-2d53e2ef3f06"/>
 </div>
